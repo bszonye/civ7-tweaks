@@ -12,7 +12,6 @@
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
     </Dependencies>
     <References>
-        <Mod id="shawnee-tecumseh" title="LOC_MODULE_SHAWNEE_TECUMSEH_NAME" />
     </References>
     <ActionCriteria>
         <Criteria id="always">
