@@ -1,5 +1,5 @@
 # Trixie’s Tweaks 1.0.0
-bugfixes and workarounds for vanilla bugs
+adjustments and experiments for Civilization VII
 
 ## if you’ve stumbled across this mod
 this is my personal collection of gameplay and interface adjustments for
