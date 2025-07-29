@@ -85,5 +85,6 @@
         </ActionGroup>
     </ActionGroups>
     <LocalizedText>
+        <File>text/en_us/ModInfoText.xml</File>
     </LocalizedText>
 </Mod>
