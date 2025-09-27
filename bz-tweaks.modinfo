@@ -46,6 +46,9 @@
                 <ImportFiles>
                     <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
                 </ImportFiles>
+                <UIScripts>
+                    <Item>ui/action/bz-panel-action.js</Item>
+                </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-always.sql</Item>
                     <Item>data/bz-tweak-always.xml</Item>
