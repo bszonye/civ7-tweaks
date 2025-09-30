@@ -9,7 +9,11 @@ class bzPanelAction {
             c.sendUnreadyTurn();
         } else if (!GameContext.hasSentTurnComplete()) {
             if (c.canEndTurn()) {
-                // c.sendEndTurn();
+                // block hotkeys from ending turn
+                // (but allow controllers since they have no other way)
+                if (Input.getActiveDeviceType() == InputDeviceType.Controller) {
+                    c.sendEndTurn();
+                }
             } else {
                 c.activateBlockingNotification();
             }
