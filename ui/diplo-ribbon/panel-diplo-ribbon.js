@@ -1,7 +1,8 @@
-import FocusManager, { A as Audio } from '../../../core/ui/input/focus-manager.js';
+import { A as Audio } from '../../../core/ui/audio-base/audio-support.chunk.js';
 import { a as ActionActivateEventName, A as ActionActivateEvent } from '../../../core/ui/components/fxs-activatable.chunk.js';
 import ContextManager from '../../../core/ui/context-manager/context-manager.js';
 import ActionHandler, { ActiveDeviceTypeChangedEventName } from '../../../core/ui/input/action-handler.js';
+import FocusManager from '../../../core/ui/input/focus-manager.js';
 import { a as NavigateInputEventName, b as InputEngineEventName } from '../../../core/ui/input/input-support.chunk.js';
 import { InterfaceMode } from '../../../core/ui/interface-modes/interface-modes.js';
 import { P as Panel, A as AnchorType } from '../../../core/ui/panel-support.chunk.js';
@@ -11,12 +12,13 @@ import { m as multiplayerTeamColors } from '../../../core/ui/utilities/utilities
 import { D as DiploRibbonData, U as UpdateDiploRibbonEvent, a as RibbonStatsToggleStatus } from './model-diplo-ribbon.chunk.js';
 import { RaiseDiplomacyEvent } from '../diplomacy/diplomacy-events.js';
 import DiplomacyManager from '../diplomacy/diplomacy-manager.js';
-import '../../../core/ui/framework.chunk.js';
 import '../../../core/ui/context-manager/display-queue-manager.js';
 import '../../../core/ui/dialog-box/manager-dialog-box.chunk.js';
 import '../../../core/ui/context-manager/display-handler.chunk.js';
+import '../../../core/ui/framework.chunk.js';
 import '../../../core/ui/input/cursor.js';
 import '../../../core/ui/views/view-manager.chunk.js';
+import '../../../core/ui/utilities/utilities-update-gate.chunk.js';
 import '../../../core/ui/utilities/utilities-color.chunk.js';
 import '../../../core/ui/graph-layout/utils.chunk.js';
 import '../../../core/ui/utilities/utilities-image.chunk.js';
@@ -25,7 +27,6 @@ import '../victory-progress/model-victory-progress.chunk.js';
 import '../cinematic/cinematic-manager.chunk.js';
 import '../endgame/screen-endgame.js';
 import '../../../core/ui/navigation-tray/model-navigation-tray.chunk.js';
-import '../../../core/ui/utilities/utilities-update-gate.chunk.js';
 import '../../../core/ui/tooltips/tooltip-manager.js';
 import '../../../core/ui/input/plot-cursor.js';
 import '../end-results/end-results.js';
@@ -239,7 +240,6 @@ class PanelDiploRibbon extends Panel {
         this.Root.classList.toggle("top-40", 13 <= numShown);
         // backdrop for screenshots
         if (BZ_BACKDROP) this.Root.classList.add("bg-primary-4", "h-52");
-        // in diplomacy hub, start off showing whichever leader we selected to get in here
         if (isDiplomacyHub) {
             for (let index = 0; index < targetArray.length; index++) {
                 if (targetArray[index].id == DiplomacyManager.selectedPlayerID) {
@@ -526,7 +526,6 @@ class PanelDiploRibbon extends Panel {
                 yieldValue.setAttribute("data-l10n-id", yieldData.value.toString());
                 yieldValue.setAttribute("data-tooltip-content", yieldData.details);
                 yieldItem.classList.add(`text-yield-${yieldData.type}`);
-                yieldItem.classList.add(`group-hover: opactiy-50`);
                 yieldItem.appendChild(yieldValue);
                 civFlagYieldFlex.appendChild(yieldItem);
             }
@@ -840,6 +839,24 @@ class PanelDiploRibbon extends Panel {
             this.refreshRibbonVis();
         }
     }
+    /**
+     * Obtain index of the selected leader.
+     * @returns Index of the selected leader or -1 if error.
+     */
+    getCurrentLeaderIndex() {
+        const selectedCard = this.mainContainer?.querySelector(".selected")?.parentElement?.parentElement?.parentElement;
+        if (!selectedCard) {
+            console.error("diplo-ribbon: Couldn't find the select card in order to derive index.");
+            return -1;
+        }
+        const indexString = selectedCard.getAttribute("data-ribbon-index");
+        if (!indexString) {
+            console.error("diplo-ribbon: Could not find data-ribbon-index on diplo-ribbon.");
+            return -1;
+        }
+        const index = Number.parseInt(indexString);
+        return index;
+    }
     refreshRibbonVis() {
         const leftArrow = MustGetElement(".diplo-ribbon-left-arrow", this.mainContainer);
         const rightArrow = MustGetElement(".diplo-ribbon-right-arrow", this.mainContainer);
@@ -855,10 +872,11 @@ class PanelDiploRibbon extends Panel {
                 index < this.firstLeaderIndex || index >= this.firstLeaderIndex + this.numLeadersToShow
             );
         }
+        const currentIndex = this.getCurrentLeaderIndex();
         leftArrow.classList.toggle("img-arrow2", this.firstLeaderIndex > 0);
         leftArrow.classList.toggle("img-arrow2-disabled", this.firstLeaderIndex == 0);
         if (this.navHelpLeft) {
-            this.navHelpLeft.classList.toggle("opacity-0", this.firstLeaderIndex == 0);
+            this.navHelpLeft.classList.toggle("opacity-0", this.firstLeaderIndex == 0 && currentIndex == 0);
         }
         if (this.firstLeaderIndex > 0) {
             leftArrow.removeAttribute("disabled");
@@ -1045,18 +1063,8 @@ class PanelDiploRibbon extends Panel {
         } else {
             targetArray = DiploRibbonData.playerData;
         }
-        const selectedCard = this.mainContainer?.querySelector(".selected")?.parentElement?.parentElement?.parentElement;
-        if (!selectedCard) {
-            console.error("diplo-ribbon: Couldn't find selected ribbon");
-            return;
-        }
-        const currentIndex = selectedCard.getAttribute("data-ribbon-index");
-        if (!currentIndex) {
-            console.error("diplo-ribbon: Couldn't find data-ribbon-index on selected ribbon");
-            return;
-        }
-        const currentLeaderIdx = Number.parseInt(currentIndex);
-        let selectedIndex = 0;
+        const currentLeaderIdx = this.getCurrentLeaderIndex();
+        let selectedIndex = currentLeaderIdx;
         let scrollingRight = false;
         if (inputEvent.detail.name == "nav-shell-previous") {
             if (currentLeaderIdx > 0) {
@@ -1065,30 +1073,28 @@ class PanelDiploRibbon extends Panel {
                 return;
             }
         } else {
-            if (currentLeaderIdx < targetArray.length - 1) {
+            if (currentLeaderIdx < targetArray.length) {
                 scrollingRight = true;
                 selectedIndex = currentLeaderIdx + 1;
             } else {
                 return;
             }
         }
-        let nextLeader = targetArray[selectedIndex];
-        if (!nextLeader.canClick) {
-            if (scrollingRight) {
-                for (let i = selectedIndex; i < targetArray.length - 1; i++) {
-                    const leader = targetArray[i];
-                    if (leader.canClick) {
-                        nextLeader = leader;
-                        break;
-                    }
+        let nextLeader = targetArray[currentLeaderIdx];
+        if (scrollingRight) {
+            for (let i = selectedIndex; i < targetArray.length; i++) {
+                const leader = targetArray[i];
+                if (leader.canClick) {
+                    nextLeader = leader;
+                    break;
                 }
-            } else {
-                for (let i = selectedIndex; i >= 0; i--) {
-                    const leader = targetArray[i];
-                    if (leader.canClick) {
-                        nextLeader = leader;
-                        break;
-                    }
+            }
+        } else {
+            for (let i = selectedIndex; i >= 0; i--) {
+                const leader = targetArray[i];
+                if (leader.canClick || leader.id === 0) {
+                    nextLeader = leader;
+                    break;
                 }
             }
         }
@@ -1198,7 +1204,7 @@ class PanelDiploRibbon extends Panel {
             this.Root.classList.remove("hidden");
         }
     }
-    onInputContextChanged() {
+    onInputContextChanged(contextData) {
         const context = Input.getActiveContext();
         const curTarget = ContextManager.getCurrentTarget();
         if (!DiploRibbonData.userDiploRibbonsToggled) {
@@ -1210,8 +1216,10 @@ class PanelDiploRibbon extends Panel {
                 return;
             }
         }
-        if (this.toggleNavHelp) {
+        if (this.toggleNavHelp && contextData.newContext == InputContext.World) {
             this.toggleNavHelp.classList.remove("opacity-0");
+        } else if (this.toggleNavHelp) {
+            this.toggleNavHelp.classList.add("opacity-0");
         }
     }
     /**
