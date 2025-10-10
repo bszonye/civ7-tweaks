@@ -233,11 +233,12 @@ class PanelDiploRibbon extends Panel {
         }
         const numShown = Math.min(targetArray.length, this.numLeadersToShow);
         this.diploRibbons = [];
-        // make room for high player counts
+        // TRIX: make room for high player counts
         if (11 <= numShown) this.Root.classList.remove("right-24");
-        this.Root.classList.toggle("right-4", 11 <= numShown);
         this.Root.classList.toggle("top-8", numShown < 13);
+        this.Root.classList.toggle("right-4", 11 <= numShown && numShown < 20);
         this.Root.classList.toggle("top-40", 13 <= numShown);
+        this.Root.classList.toggle("-right-4", 20 <= numShown);
         // backdrop for screenshots
         if (BZ_BACKDROP) this.Root.classList.add("bg-primary-4", "h-52");
         if (isDiplomacyHub) {
@@ -1014,6 +1015,7 @@ class PanelDiploRibbon extends Panel {
                 break;
             case "sys-menu":
                 // pause
+                // TRIX: fall through
             case "shell-action-5":
                 DiploRibbonData.userDiploRibbonsToggled = DiploRibbonData.userDiploRibbonsToggled == RibbonStatsToggleStatus.RibbonStatsShowing ? RibbonStatsToggleStatus.RibbonStatsHidden : RibbonStatsToggleStatus.RibbonStatsShowing;
                 window.dispatchEvent(new UpdateDiploRibbonEvent());
@@ -1233,7 +1235,7 @@ class PanelDiploRibbon extends Panel {
     }
 }
 const BZ_BACKDROP = false;
-const BZ_MAX_LEADERS = 19;
+const BZ_MAX_LEADERS = 20;
 Controls.define("panel-diplo-ribbon", {
     createInstance: PanelDiploRibbon,
     description: "Houses the players' portraits and stats and start of diplomatic interactions",

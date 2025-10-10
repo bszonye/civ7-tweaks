@@ -2,6 +2,6 @@
 <Database>
     <Maps>
         <Replace MapSizeType="MAPSIZE_HUGE" Name="LOC_MAPSIZE_HUGE_NAME" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" DefaultPlayers="12" PlayersLandmass1="6" PlayersLandmass2="6" GridWidth="106" GridHeight="66" NumNaturalWonders="7" OceanWidth="8" LakeSizeCutoff="10" LakeGenerationFrequency="25" Continents="6" StartSectorRows="4" StartSectorCols="3"/>
-        <Replace MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" DefaultPlayers="19" PlayersLandmass1="10" PlayersLandmass2="10" GridWidth="128" GridHeight="80" NumNaturalWonders="7" OceanWidth="8" LakeSizeCutoff="10" LakeGenerationFrequency="25" Continents="6" StartSectorRows="5" StartSectorCols="4"/>
+        <Replace MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" DefaultPlayers="20" PlayersLandmass1="10" PlayersLandmass2="10" GridWidth="128" GridHeight="80" NumNaturalWonders="7" OceanWidth="8" LakeSizeCutoff="10" LakeGenerationFrequency="25" Continents="6" StartSectorRows="5" StartSectorCols="4"/>
     </Maps>
 </Database>
