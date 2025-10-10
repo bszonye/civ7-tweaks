@@ -239,7 +239,7 @@ class PanelDiploRibbon extends Panel {
         this.Root.classList.toggle("right-4", 11 <= numShown && numShown < 20);
         this.Root.classList.toggle("top-40", 13 <= numShown);
         this.Root.classList.toggle("-right-4", 20 <= numShown);
-        // backdrop for screenshots
+        // TRIX: backdrop for screenshots
         if (BZ_BACKDROP) this.Root.classList.add("bg-primary-4", "h-52");
         if (isDiplomacyHub) {
             for (let index = 0; index < targetArray.length; index++) {
@@ -389,15 +389,21 @@ class PanelDiploRibbon extends Panel {
             const portrait = document.createElement("fxs-icon");
             portrait.classList.value = "diplo-ribbon__portrait-image absolute size-26 -left-2\\.5";
             portrait.setAttribute("data-icon-id", player.leaderType);
-            portrait.setAttribute("data-icon-context", player.portraitContext);
+            // TRIX: show happy faces in backdrop mode
+            // portrait.setAttribute("data-icon-context", player.portraitContext);
+            portrait.setAttribute("data-icon-context", BZ_BACKDROP ? "LEADER_HAPPY" : player.portraitContext);
             portrait.classList.toggle("turn-active", player.isTurnActive);
-            portrait.classList.toggle("-scale-x-100", player.id != GameContext.localPlayerID);
+            // TRIX: show player-side faces in backdrop mode
+            // portrait.classList.toggle("-scale-x-100", player.id != GameContext.localPlayerID);
+            portrait.classList.toggle("-scale-x-100", player.id != GameContext.localPlayerID && !BZ_BACKDROP);
             civLeader.appendChild(portrait);
             const relationContainer = document.createElement("div");
             relationContainer.classList.add("diplo-ribbon__relation-container");
             const relationshipIcon = document.createElement("fxs-activatable");
             relationshipIcon.classList.value = "relationship-icon relative bg-contain bg-center bg-no-repeat pointer-events-auto self-center w-18 h-9";
-            relationshipIcon.classList.toggle("hidden", player.relationshipIcon == "");
+            // TRIX: hide relationship icons in backdrop mode
+            // relationshipIcon.classList.toggle("hidden", player.relationshipIcon == "");
+            relationshipIcon.classList.toggle("hidden", player.relationshipIcon == "" || BZ_BACKDROP);
             relationshipIcon.style.backgroundImage = `url('${player.relationshipIcon}')`;
             relationshipIcon.setAttribute("data-player-id", player.id.toString());
             if (!isMobileViewExperience) {
