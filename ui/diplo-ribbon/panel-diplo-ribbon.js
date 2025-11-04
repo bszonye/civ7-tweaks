@@ -12,6 +12,7 @@ import { m as multiplayerTeamColors } from '../../../core/ui/utilities/utilities
 import { D as DiploRibbonData, U as UpdateDiploRibbonEvent, a as RibbonStatsToggleStatus } from './model-diplo-ribbon.chunk.js';
 import { RaiseDiplomacyEvent } from '../diplomacy/diplomacy-events.js';
 import DiplomacyManager from '../diplomacy/diplomacy-manager.js';
+import { T as TechCivicPopupVisibility } from '../tech-civic-complete/tech-civic-popup-manager.chunk.js';
 import '../../../core/ui/context-manager/display-queue-manager.js';
 import '../../../core/ui/dialog-box/manager-dialog-box.chunk.js';
 import '../../../core/ui/context-manager/display-handler.chunk.js';
@@ -39,6 +40,7 @@ import '../../../core/ui/events/shell-events.chunk.js';
 import '../../../core/ui/utilities/utilities-liveops.js';
 import '../interface-modes/support-unit-map-decoration.chunk.js';
 import '../utilities/utilities-overlay.chunk.js';
+import '../tutorial/tutorial-item.js';
 
 const styles = "fs://game/base-standard/ui/diplo-ribbon/panel-diplo-ribbon.css";
 
@@ -79,6 +81,7 @@ class PanelDiploRibbon extends Panel {
     attributeButton = null;
     diploRibbons = [];
     firstLeaderIndex = 0;
+  techCivicPopupVisibilityListener = this.techCivicPopupVisibility.bind(this);
     constructor(root) {
         super(root);
         if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_DIALOG") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_CALL_TO_ARMS")) {
@@ -114,7 +117,8 @@ class PanelDiploRibbon extends Panel {
         } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_DIALOG") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_CALL_TO_ARMS")) {
             this.Root.classList.add("diplomacy-dialog-ribbon");
         } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
-            if (Players.get(DiplomacyManager.selectedPlayerID)?.isIndependent) {
+      const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
+      if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
                 return;
             } else {
                 if (DiplomacyManager.selectedPlayerID == GameContext.localPlayerID) {
@@ -129,6 +133,7 @@ class PanelDiploRibbon extends Panel {
         window.addEventListener("interface-mode-changed", this.interfaceModeChangedListener);
         window.addEventListener("resize", this.windowResizeListener);
         window.addEventListener("update-diplo-ribbon", this.bannerUpdateListener);
+    window.addEventListener(TechCivicPopupVisibility, this.techCivicPopupVisibilityListener);
         engine.on("AttributePointsChanged", this.attributePointsUpdatedListener);
         engine.on("AttributeNodeCompleted", this.attributePointsUpdatedListener);
         engine.on("InputContextChanged", this.inputContextChangedListener);
@@ -148,6 +153,7 @@ class PanelDiploRibbon extends Panel {
         window.removeEventListener("interface-mode-changed", this.interfaceModeChangedListener);
         window.removeEventListener("engine-input", this.engineCaptureAllInputListener, true);
         window.removeEventListener(ActiveDeviceTypeChangedEventName, this.activeDeviceTypeListener);
+    window.removeEventListener(TechCivicPopupVisibility, this.techCivicPopupVisibilityListener);
         engine.off("UI_OptionsChanged", this.userOptionChangedListener);
         engine.off("AttributePointsChanged", this.attributePointsUpdatedListener);
         engine.off("AttributeNodeCompleted", this.attributePointsUpdatedListener);
@@ -160,9 +166,12 @@ class PanelDiploRibbon extends Panel {
      * @returns
      */
     canTakeGamepadFocus() {
+    if (!ContextManager.isEmpty) {
+      return false;
+    }
         let isFocusable = ActionHandler.isGamepadActive;
         if (isFocusable) {
-            const alwaysShow = DiploRibbonData.areRibbonYieldsStuckOnScreen;
+      const alwaysShow = DiploRibbonData.alwaysShowYields;
             if (alwaysShow && !this.panArrows) {
                 isFocusable = false;
             }
@@ -1208,6 +1217,11 @@ class PanelDiploRibbon extends Panel {
             this.Root.classList.remove("other-player-diplomacy-hub-ribbon");
             this.Root.classList.remove("local-player-diplomacy-hub-ribbon");
             this.populateFlags();
+    } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
+      const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
+      if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
+        this.Root.classList.add("hidden");
+      }
         } else {
             this.Root.classList.remove("hidden");
         }
@@ -1224,10 +1238,8 @@ class PanelDiploRibbon extends Panel {
                 return;
             }
         }
-        if (this.toggleNavHelp && contextData.newContext == InputContext.World) {
-            this.toggleNavHelp.classList.remove("opacity-0");
-        } else if (this.toggleNavHelp) {
-            this.toggleNavHelp.classList.add("opacity-0");
+    if (this.toggleNavHelp) {
+      this.toggleNavHelp.classList.remove("opacity-0");
         }
     }
     /**
@@ -1239,6 +1251,11 @@ class PanelDiploRibbon extends Panel {
             this.realizeNavHelp();
         }, frames);
     }
+  //listen to tech popup visibility to avoid controller softlock
+  techCivicPopupVisibility() {
+    DiploRibbonData.userDiploRibbonsToggled = RibbonStatsToggleStatus.RibbonStatsHidden;
+    window.dispatchEvent(new UpdateDiploRibbonEvent());
+  }
 }
 const BZ_BACKDROP = false;
 const BZ_MAX_LEADERS = 20;
