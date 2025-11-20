@@ -3,9 +3,8 @@ adjustments and experiments for Civilization VII
 
 ## changes
 - Huge maps: change default player count to 12
-- Test maps: alternate Huge map with 19 players (for jersey testing)
-- diplo-ribbon: accommodate up to 19 visible leaders
-- Bridhadeeswarar Temple and Machu Pikchu: ageless adjacency bonuses
+- Test maps: alternate Huge map with 20 players (for jersey testing)
+- diplo-ribbon: accommodate up to 20 visible leaders
 
 ## if you’ve stumbled across this mod
 this is my personal collection of gameplay and interface adjustments for
