@@ -36,6 +36,9 @@
                 <UpdateDatabase>
                     <Item>data/bz-tweak-shell.xml</Item>
                 </UpdateDatabase>
+                <UpdateText>
+                    <Item>text/en_us/InGameText.xml</Item>
+                </UpdateText>
             </Actions>
         </ActionGroup>
         <ActionGroup id="bz-tweak-always" scope="game" criteria="always">
@@ -46,10 +49,16 @@
                 <ImportFiles>
                     <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
                 </ImportFiles>
+                <UIScripts>
+                    <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
+                </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-always.sql</Item>
                     <Item>data/bz-tweak-always.xml</Item>
                 </UpdateDatabase>
+                <UpdateText>
+                    <Item>text/en_us/InGameText.xml</Item>
+                </UpdateText>
             </Actions>
         </ActionGroup>
         <ActionGroup id="bz-tweak-antiquity" scope="game" criteria="bz-age-antiquity">
