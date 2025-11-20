@@ -30,7 +30,7 @@
     <ActionGroups>
         <ActionGroup id="bz-tweak-shell" scope="shell" criteria="always">
             <Properties>
-                <LoadOrder>500</LoadOrder>
+                <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <UpdateDatabase>
@@ -40,7 +40,7 @@
         </ActionGroup>
         <ActionGroup id="bz-tweak-always" scope="game" criteria="always">
             <Properties>
-                <LoadOrder>500</LoadOrder>
+                <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <ImportFiles>
@@ -54,7 +54,7 @@
         </ActionGroup>
         <ActionGroup id="bz-tweak-antiquity" scope="game" criteria="bz-age-antiquity">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <UpdateDatabase>
@@ -64,7 +64,7 @@
         </ActionGroup>
         <ActionGroup id="bz-tweak-exploration" scope="game" criteria="bz-age-exploration">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <UpdateDatabase>
@@ -74,7 +74,7 @@
         </ActionGroup>
         <ActionGroup id="bz-tweak-modern" scope="game" criteria="bz-age-modern">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <UpdateDatabase>
