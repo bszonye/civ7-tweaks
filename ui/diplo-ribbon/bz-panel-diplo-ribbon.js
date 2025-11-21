@@ -53,6 +53,9 @@ DiploRibbonData.createPlayerYieldsData = function(player, isLocal) {
         ...ydata,
     ];
 }
+// refresh model with patched version
+engine.whenReady.then(() => DiploRibbonData.updateAll());
+
 class bzPanelDiploRibbon {
     static c_prototype;
     constructor(component) {
