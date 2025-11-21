@@ -33,6 +33,9 @@
                 <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
+                <UIScripts>
+                    <Item>ui/shell/bz-tweak-shell.js</Item>
+                </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-shell.xml</Item>
                 </UpdateDatabase>
