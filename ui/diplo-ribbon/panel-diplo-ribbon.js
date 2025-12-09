@@ -15,7 +15,6 @@ import DiplomacyManager from '../diplomacy/diplomacy-manager.js';
 import { T as TechCivicPopupVisibility } from '../tech-civic-complete/tech-civic-popup-manager.chunk.js';
 import '../../../core/ui/context-manager/display-queue-manager.js';
 import '../../../core/ui/dialog-box/manager-dialog-box.chunk.js';
-import '../../../core/ui/context-manager/display-handler.chunk.js';
 import '../../../core/ui/framework.chunk.js';
 import '../../../core/ui/input/cursor.js';
 import '../../../core/ui/views/view-manager.chunk.js';
@@ -166,9 +165,6 @@ class PanelDiploRibbon extends Panel {
      * @returns
      */
     canTakeGamepadFocus() {
-    if (!ContextManager.isEmpty) {
-      return false;
-    }
         let isFocusable = ActionHandler.isGamepadActive;
         if (isFocusable) {
       const alwaysShow = DiploRibbonData.alwaysShowYields;
@@ -999,10 +995,7 @@ class PanelDiploRibbon extends Panel {
         return true;
     }
     onCivFlagEngineInput(inputEvent) {
-        if (!this.handleCivFlagEngineInput(inputEvent)) {
-            inputEvent.stopPropagation();
-            inputEvent.preventDefault();
-        }
+        this.handleCivFlagEngineInput(inputEvent);
     }
     handleCivFlagEngineInput(inputEvent) {
         switch (inputEvent.detail.name) {
@@ -1013,9 +1006,8 @@ class PanelDiploRibbon extends Panel {
                     Audio.playSound("data-audio-focus", "audio-panel-diplo-ribbon");
                     this.isHoverAll = true;
                 }
-                return false;
+                return;
         }
-        return true;
     }
     onEngineInput(inputEvent) {
         if (inputEvent.detail.status != InputActionStatuses.FINISH) {
@@ -1238,8 +1230,10 @@ class PanelDiploRibbon extends Panel {
                 return;
             }
         }
-    if (this.toggleNavHelp) {
-      this.toggleNavHelp.classList.remove("opacity-0");
+        if (this.toggleNavHelp && contextData.newContext == InputContext.World) {
+            this.toggleNavHelp.classList.remove("opacity-0");
+        } else if (this.toggleNavHelp) {
+            this.toggleNavHelp.classList.add("opacity-0");
         }
     }
     /**
