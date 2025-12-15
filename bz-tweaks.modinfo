@@ -54,6 +54,7 @@
                 </ImportFiles>
                 <UIScripts>
                     <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
+                    <Item>ui/diplomacy-actions/bz-panel-player-diplomacy.js</Item>
                 </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-always.sql</Item>
