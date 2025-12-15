@@ -26,12 +26,16 @@ class bzPlayerDiplomacyActionPanel {
     afterDetach() {}
     afterCreateMinorPlayerListItem(item, player) {
         const content = item.firstChild;
+        content.firstChild.style.filter = "drop-shadow(0 0.22rem 0.11rem #0006)";
         const column = document.createElement("div");
         column.classList.value =
             "basis-full shrink flex flex-row flex-row-reverse justify-start items-center";
+        const typeBG = document.createElement("div");
+        typeBG.classList.value = "-ml-14 mr-2 size-14 bg-cover bg-no-repeat";
+        typeBG.style.backgroundImage = `url('blp:buildicon_open')`;
+        typeBG.style.filter = "saturate(0.25) drop-shadow(0 0.22rem 0.11rem black)";
         const typeIcon = document.createElement("div");
-        typeIcon.classList.value =
-            "mr-2 size-16 bg-cover bg-black border border-primary rounded-full";
+        typeIcon.classList.value = "size-14 bg-cover bg-no-repeat";
         const type = GameInfo.Independents
             .find(i => player.civilizationAdjective == i.CityStateName)
             ?.CityStateType.toLowerCase();
@@ -43,8 +47,10 @@ class bzPlayerDiplomacyActionPanel {
             type == "diplomatic" ? "#255be4" :
             type == "expansionist" ? "#00a717" :
             "#af1b1c";
-        typeIcon.style.backgroundImage = `url('blp:bonustype_${type}.png')`;
-        typeIcon.style.fxsBackgroundImageTint = color;
+        typeIcon.style.backgroundImage = `url('blp:bonustype_${type}')`;
+        typeIcon.style.opacity = 0.5;
+        typeIcon.style.filter = `brightness(2) fxs-color-tint(${color})`;
+        column.appendChild(typeBG);
         column.appendChild(typeIcon);
         content.appendChild(column);
         // befriending status
