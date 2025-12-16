@@ -38,7 +38,7 @@ class bzPlayerDiplomacyActionPanel {
         typeIcon.classList.value = "size-14 bg-cover bg-no-repeat";
         const type = GameInfo.Independents
             .find(i => player.civilizationAdjective == i.CityStateName)
-            ?.CityStateType.toLowerCase();
+            ?.CityStateType.toLowerCase() ?? "crisis";
         const color =
             type == "militaristic" ? "#af1b1c" :
             type == "scientific" ? "#4d7c96" :
@@ -46,6 +46,7 @@ class bzPlayerDiplomacyActionPanel {
             type == "cultural" ? "#892bb3" :
             type == "diplomatic" ? "#255be4" :
             type == "expansionist" ? "#00a717" :
+            type == "crisis" ? "#af1b1c" :
             "#af1b1c";
         typeIcon.style.backgroundImage = `url('blp:bonustype_${type}')`;
         typeIcon.style.opacity = 0.5;
