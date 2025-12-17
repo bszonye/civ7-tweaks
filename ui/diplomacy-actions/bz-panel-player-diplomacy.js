@@ -1,4 +1,3 @@
-
 class bzPlayerDiplomacyActionPanel {
     static c_prototype;
     locations = new Map();
@@ -42,8 +41,11 @@ class bzPlayerDiplomacyActionPanel {
     beforeDetach()  {}
     afterDetach() { }
     afterCreateMinorPlayerListItem(item, player) {
+        // adjust vanilla styling
         const content = item.firstChild;
         content.firstChild.style.filter = "drop-shadow(0 0.22rem 0.11rem #0006)";
+        content.children[1]?.classList.remove("mt-2");
+        // show city-state type and befriending status
         const column = document.createElement("div");
         column.classList.value =
             "basis-full shrink flex flex-row flex-row-reverse justify-start items-center";
@@ -70,7 +72,20 @@ class bzPlayerDiplomacyActionPanel {
         typeIcon.style.filter = `brightness(2) fxs-color-tint(${color})`;
         column.appendChild(typeBG);
         column.appendChild(typeIcon);
-        content.appendChild(column);
+        // show city-state bonus in tooltip
+        const bonusType = Game.CityStates.getBonusType(player.id);
+        const bonus = GameInfo.CityStateBonuses.lookup(bonusType);
+        if (bonus) {
+            const name = Locale.compose(bonus.Name);
+            const desc = Locale.compose(bonus.Description);
+            // style the tooltip text to fix fonticon alignment
+            const tooltip = `[b]${name}[/b][n]${desc}`
+                .split(/\[[Nn]\]/)
+                .map(s => `[style:leading-normal]${s}[/style]`)
+                .join("[n]");
+            console.warn(`TRIX TT ${JSON.stringify(tooltip)}`);
+            typeIcon.setAttribute("data-tooltip-content", tooltip);
+        }
         // befriending status
         const observer = Players.get(GameContext.localObserverID);
         const diplomacy = observer.Diplomacy;
@@ -90,7 +105,7 @@ class bzPlayerDiplomacyActionPanel {
         befriending.sort((a, b) => a.turns - b.turns || a.order - b.order);
         for (const friend of befriending) {
             const friendIcon = document.createElement("leader-icon");
-            friendIcon.classList.add("mr-2", "mt-2", "size-13");
+            friendIcon.classList.value = "relative mr-2 size-13";
             if (diplomacy.hasMet(friend.player.id) || friend.player.id == observer.id) {
                 friendIcon.setAttribute("leader", friend.player.leaderTypeName);
                 friendIcon.setAttribute(
@@ -100,8 +115,17 @@ class bzPlayerDiplomacyActionPanel {
             } else {
                 friendIcon.setAttribute("leader", "LEADER_UNMET");
             }
+            const friendTurns = document.createElement("div");
+            friendTurns.classList.value =
+                "absolute -bottom-2 font-body-xs leading-tight bg-accent-2 px-1 z-1";
+            friendTurns.style.paddingLeft = friendTurns.style.paddingRight = "0.125em";
+            friendTurns.style.backgroundColor = "#000c";
+            friendTurns.style.borderRadius = "0.375em";
+            friendTurns.textContent = friend.turns.toString();
+            friendIcon.appendChild(friendTurns);
             column.appendChild(friendIcon);
         }
+        content.appendChild(column);
         item.addEventListener("action-activate", () => {
             // pan to civ location
             const loc = this.locations.get(player.id);
