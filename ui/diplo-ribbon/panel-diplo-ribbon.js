@@ -6,6 +6,7 @@ import FocusManager from '../../../core/ui/input/focus-manager.js';
 import { a as NavigateInputEventName, b as InputEngineEventName } from '../../../core/ui/input/input-support.chunk.js';
 import { InterfaceMode } from '../../../core/ui/interface-modes/interface-modes.js';
 import { P as Panel, A as AnchorType } from '../../../core/ui/panel-support.chunk.js';
+import { a as applyPlayerColorsToElement } from '../../../core/ui/utilities/utilities-color.chunk.js';
 import { MustGetElement } from '../../../core/ui/utilities/utilities-dom.chunk.js';
 import { L as Layout } from '../../../core/ui/utilities/utilities-layout.chunk.js';
 import { m as multiplayerTeamColors } from '../../../core/ui/utilities/utilities-network-constants.chunk.js';
@@ -19,8 +20,6 @@ import '../../../core/ui/framework.chunk.js';
 import '../../../core/ui/input/cursor.js';
 import '../../../core/ui/views/view-manager.chunk.js';
 import '../../../core/ui/utilities/utilities-update-gate.chunk.js';
-import '../../../core/ui/utilities/utilities-color.chunk.js';
-import '../../../core/ui/graph-layout/utils.chunk.js';
 import '../../../core/ui/utilities/utilities-image.chunk.js';
 import '../../../core/ui/utilities/utilities-component-id.chunk.js';
 import '../victory-progress/model-victory-progress.chunk.js';
@@ -317,12 +316,9 @@ class PanelDiploRibbon extends Panel {
             const player = targetArray[cardIndex];
             const civFlagContainer = document.createElement("div");
             civFlagContainer.classList.add("diplo-ribbon-outer", "flex", "flex-row");
-            if (player.playerColors) {
-                civFlagContainer.setAttribute("style", player.playerColors);
-            }
+            applyPlayerColorsToElement(civFlagContainer, player.id);
             civFlagContainer.setAttribute("data-player-id", player.id.toString());
             civFlagContainer.setAttribute("data-ribbon-index", cardIndex.toString());
-            civFlagContainer.classList.toggle("primary-color-is-lighter", player.isPrimaryLighter);
             civFlagContainer.classList.toggle("show-on-hover", !DiploRibbonData.areRibbonYieldsStuckOnScreen);
             civFlagContainer.classList.toggle("local-player", player.id == GameContext.localPlayerID);
             civFlagContainer.classList.toggle("hidden", cardIndex < scrollIndex || cardIndex >= scrollIndex + numShown);
@@ -714,10 +710,6 @@ class PanelDiploRibbon extends Panel {
                     currentPortait.value.classList.toggle("turn-active", player.isTurnActive);
                     const currentFlag = availableFlags[numflags];
                     currentFlag.value.classList.toggle("can-click-leader-icon", targetArray[cardIndex].canClick);
-                    currentFlag.value.classList.toggle(
-                        "primary-color-is-lighter",
-                        targetArray[cardIndex].isPrimaryLighter
-                    );
                     currentFlag.value.classList.toggle("show-on-hover", !DiploRibbonData.areRibbonYieldsStuckOnScreen);
                     currentFlag.value.classList.toggle(
                         "local-player",
@@ -1209,11 +1201,13 @@ class PanelDiploRibbon extends Panel {
             this.Root.classList.remove("other-player-diplomacy-hub-ribbon");
             this.Root.classList.remove("local-player-diplomacy-hub-ribbon");
             this.populateFlags();
-    } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
-      const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
-      if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
-        this.Root.classList.add("hidden");
-      }
+        } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
+            const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
+            if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
+                this.Root.classList.add("hidden");
+            } else {
+                this.Root.classList.remove("hidden");
+            }
         } else {
             this.Root.classList.remove("hidden");
         }
