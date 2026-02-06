@@ -6,4 +6,10 @@
         <Replace Domain="StandardMapSizes" MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="20" MaxHumans="10" DefaultPlayers="20" SortIndex="70"/>
         <Replace Domain="DistantLandsMapSizes" MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="20" MaxHumans="10" DefaultPlayers="20" SortIndex="70"/>
     </MapSizes>
+    <Parameters>
+        <Update>
+            <Where ParameterID="AgeLength"/>
+            <Set DefaultValue="AGE_LENGTH_LONG"/>
+        </Update>
+    </Parameters>
 </Database>
