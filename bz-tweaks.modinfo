@@ -59,6 +59,9 @@
                     <Item>data/bz-tweak-always.sql</Item>
                     <Item>data/bz-tweak-always.xml</Item>
                 </UpdateDatabase>
+                <UpdateIcons>
+                    <Item>data/bz-tweak-always-icons.xml</Item>
+                </UpdateIcons>
                 <UpdateText>
                     <Item>text/en_us/InGameText.xml</Item>
                 </UpdateText>

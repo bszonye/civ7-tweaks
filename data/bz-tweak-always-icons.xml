@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <IconDefinitions>
+        <Replace>
+            <ID>PLAYER_RELATIONSHIP_AT_WAR</ID>
+            <Path>blp:dip_warswordshield</Path>
+        </Replace>
+    </IconDefinitions>
+</Database>
