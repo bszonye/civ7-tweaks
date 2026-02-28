@@ -16,7 +16,10 @@ DiploRibbonData.createPlayerYieldsData = function(player, isLocal) {
     const yieldCombat = player.Units.getUnits()
         .map(unit => combat(unit)).reduce((a, c) => a + c, 0);
     const yieldFood = player.Stats?.getNetYield(YieldTypes.YIELD_FOOD) ?? 0;
-    const yieldProduction = player.Stats?.getNetYield(YieldTypes.YIELD_PRODUCTION) ?? 0;
+    const yieldProduction = player.Cities?.getCities()
+        .filter(city => !city.isTown)  // don't count towns
+        .map(city => city.Yields.getNetYield(YieldTypes.YIELD_PRODUCTION))
+        .reduce((a, c) => a + c, 0) ?? 0;
     // adjust vanilla format
     const ydata = DRD_createPlayerYieldsData.call(this, player, isLocal);
     for (const y of ydata) {
