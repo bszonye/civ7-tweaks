@@ -8,16 +8,24 @@ DiploRibbonData.createPlayerYieldsData = function(player, isLocal) {
             "LOC_BZ_GROUPED_MODIFIER",
             y < 100 ? Math.trunc(y * 10) / 10 : Math.trunc(y)
         );
+    // count combat strength (best of melee, ranged, bombard)
     const combat = (unit) => {
         if (!unit.Combat?.canAttack) return 0;
-        if (unit.Combat.attackRange < 2) return unit.Combat.getMeleeStrength(false);
-        return Math.max(unit.Combat.rangedStrength, unit.Combat.bombardStrength);
+        return Math.max(
+            unit.Combat.getMeleeStrength(false),
+            unit.Combat.rangedStrength,
+            unit.Combat.bombardStrength,
+        );
     }
     const yieldCombat = player.Units.getUnits()
         .map(unit => combat(unit)).reduce((a, c) => a + c, 0);
-    const yieldFood = player.Stats?.getNetYield(YieldTypes.YIELD_FOOD) ?? 0;
-    const yieldProduction = player.Cities?.getCities()
-        .filter(city => !city.isTown)  // don't count towns
+    // count food (in growing settlements only)
+    const cities = player.Cities.getCities();
+    const yieldFood = cities.filter(city => city.Growth.growthType == GrowthTypes.EXPAND)
+        .map(city => city.Yields.getNetYield(YieldTypes.YIELD_FOOD))
+        .reduce((a, c) => a + c, 0) ?? 0;
+    // count production (in cities only)
+    const yieldProduction = cities.filter(city => !city.isTown)
         .map(city => city.Yields.getNetYield(YieldTypes.YIELD_PRODUCTION))
         .reduce((a, c) => a + c, 0) ?? 0;
     // adjust vanilla format
