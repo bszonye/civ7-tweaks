@@ -56,6 +56,7 @@
                     <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
                 </UIScripts>
                 <UpdateDatabase>
+                    <Item>data/bz-tweak-age-progress.sql</Item>
                     <Item>data/bz-tweak-always.sql</Item>
                     <Item>data/bz-tweak-always.xml</Item>
                 </UpdateDatabase>
