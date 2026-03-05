@@ -18,7 +18,7 @@ const BZ_HEAD_STYLE = [
     background: linear-gradient(90deg, #333640 0%, #33364000 100%);
 }
 .additional-content-mods .bz-even-row, .additional-content-mods .bz-odd-row {
-    border-radius: 0.667em / 50%;
+    border-radius: 1em 0 0 1em;
 }
 .additional-content-mods .bz-even-row:focus, .additional-content-mods .bz-odd-row:focus,
 .additional-content-mods .bz-even-row:hover, .additional-content-mods .bz-odd-row:hover,

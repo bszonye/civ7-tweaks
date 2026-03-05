@@ -195,7 +195,6 @@ class ModsContent extends Panel {
       const modTextContainer = document.createElement("div");
       modTextContainer.classList.add(
         "mod-text-container",
-        "group",
         "relative",
         "flex",
         "justify-start",
