@@ -94,8 +94,7 @@ class bzPanelDiploRibbon {
         const flags = this.component.Root.querySelectorAll(".diplo-ribbon-outer");
         for (const flag of flags) {
             for (const item of flag.querySelectorAll(".yield-item")) {
-                item.classList.remove("font-title-base");
-                item.classList.add("font-body-sm");
+                item.classList.replace("font-title-base", "font-body-sm");
             }
             for (const value of flag.querySelectorAll(".yield-value")) {
                 value.classList.add("ml-1");
