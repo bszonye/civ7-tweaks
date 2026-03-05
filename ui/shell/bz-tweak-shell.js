@@ -14,9 +14,17 @@ const BZ_HEAD_STYLE = [
 .additional-content-mods fxs-vslot.w-1\\/4 {
     margin-top: -1.1111111111rem;
 }
-.additional-content-mods .bz-alt-row {
-    background: linear-gradient(90deg, #333640 0%, #33364080 100%);
-    border-radius: 1rem 0 0 1rem;
+.additional-content-mods .bz-odd-row {
+    background: linear-gradient(90deg, #333640 0%, #33364000 100%);
+}
+.additional-content-mods .bz-even-row, .additional-content-mods .bz-odd-row {
+    border-radius: 0.667em / 50%;
+}
+.additional-content-mods .bz-even-row:focus, .additional-content-mods .bz-odd-row:focus,
+.additional-content-mods .bz-even-row:hover, .additional-content-mods .bz-odd-row:hover,
+.additional-content-mods .bz-even-row.pressed,
+.additional-content-mods .bz-odd-row.pressed {
+    background: linear-gradient(90deg, #8c7e62 0%, #8c7e6200 100%);
 }
 `,
 ];
