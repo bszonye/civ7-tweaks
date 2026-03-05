@@ -7,9 +7,16 @@ const BZ_HEAD_STYLE = [
 .extras-item-benchmark-ai {
     display: none;
 }
-.mod-list-scrollable .-right-1\\.5 {
-    right: auto;
-    left: -0.3333333333rem;
+.additional-content-header {
+    background-color: #f0f6;
+    height: 0rem;
+}
+.additional-content-mods fxs-vslot.w-1\\/4 {
+    margin-top: -1.1111111111rem;
+}
+.additional-content-mods .bz-alt-row {
+    background: linear-gradient(90deg, #333640 0%, #33364080 100%);
+    border-radius: 1rem 0 0 1rem;
 }
 `,
 ];

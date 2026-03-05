@@ -75,12 +75,12 @@ class ModsContent extends Panel {
 				<div class="no-mods-available w-full flex justify-center items-center flex-auto text-lg hidden" data-l10n-id="LOC_UI_MOD_NONE_AVAILABLE"></div>
 				<fxs-hslot class="mods-available w-full justify-start items-stretch flex-auto">
 					<fxs-vslot class="w-1\\/4">
-						<fxs-scrollable class="mod-list-scrollable flex-auto" handle-gamepad-pan="true">
-							<fxs-vslot class="mod-list flex mx-5"></fxs-vslot>
+						<fxs-scrollable class="mod-list-scrollable flex-auto relative -left-1" handle-gamepad-pan="true" attached-scrollbar="true">
+							<fxs-vslot class="mod-list flex mx-1"></fxs-vslot>
 						</fxs-scrollable>
 					</fxs-vslot>
 					<fxs-vslot class="w-1\\/2">
-						<fxs-scrollable class="mod-details-scrollable flex-auto my-6 mx-6">
+						<fxs-scrollable class="mod-details-scrollable flex-auto my-6 mx-6 px-4">
 							<fxs-header filigree-style="none"
 										class="selected-mod-name relative flex justify-center font-title text-2xl uppercase text-secondary mb-3"></fxs-header>
 							<p class="mod-description text-lg my-6"></p>
@@ -106,8 +106,8 @@ class ModsContent extends Panel {
 						</fxs-hslot>
 					</fxs-vslot>
 					<fxs-vslot class="w-1\\/4">
-						<fxs-scrollable class="bz-mod-list-scrollable flex-auto" handle-gamepad-pan="true">
-							<fxs-vslot class="bz-mod-list flex mx-5"></fxs-vslot>
+						<fxs-scrollable class="bz-mod-list-scrollable flex-auto relative -right-1" handle-gamepad-pan="true" attached-scrollbar="true">
+							<fxs-vslot class="bz-mod-list flex mx-1"></fxs-vslot>
 						</fxs-scrollable>
 					</fxs-vslot>
 				</fxs-hslot>
@@ -166,7 +166,7 @@ class ModsContent extends Panel {
       const globalIndex = baseIndex + index;
       const modentry = document.createElement("fxs-hslot");
       modentry.classList.add("mod-entry");
-      modentry.classList.add(index % 2 === 0 ? "" : "bg-primary-3");
+      modentry.classList.add(index % 2 === 0 ? "" : "bz-alt-row");
       modentry.style.display = "flex";
       modentry.style.alignItems = "center";
       modList.appendChild(modentry);
@@ -220,6 +220,7 @@ class ModsContent extends Panel {
         "grow",
         "leading-normal",
         "p-1",
+        "truncate",
       );
       modActivatable.appendChild(modTextContainer);
       const modIcon = document.createElement("div");
