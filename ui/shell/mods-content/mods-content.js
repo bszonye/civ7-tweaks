@@ -25,6 +25,7 @@ function compareInstalledMods(a, b) {
   return true;
 }
 class ModsContent extends Panel {
+  bzModAffectsSavedGame;
   mainSlot;
   modEntries;
   modNameHeader;
@@ -58,6 +59,7 @@ class ModsContent extends Panel {
     this.modDateText = MustGetElement(".mod-date", this.Root);
     this.modDescriptionText = MustGetElement(".mod-description", this.Root);
     this.modDependenciesContent = MustGetElement(".mod-dependencies", this.Root);
+    this.bzModAffectsSavedGame = MustGetElement(".mod-affects-saved-game", this.Root);
     this.modsEnableAll = MustGetElement(".mods-enable-all", this.Root);
     this.modsDisableUser = MustGetElement(".mods-disable-user", this.Root);
     if (Modding.userModSupportAvailable()) {
@@ -84,11 +86,9 @@ class ModsContent extends Panel {
 							<fxs-header filigree-style="none"
 										class="selected-mod-name relative flex justify-center font-title text-2xl uppercase text-secondary mb-3"></fxs-header>
 							<p class="mod-description text-lg my-6"></p>
-							<fxs-hslot class="justify-between">
-								<p class="mod-author relative text-lg w-1\\/2"></p>
-								<p class="mod-date relative flex justify-end text-lg w-1\\/2"></p>
-							</fxs-hslot>
-							<div class="mod-affects-saved-game hidden text-lg"></div>
+							<p class="mod-author relative text-lg"></p>
+							<p class="mod-date relative flex text-lg"></p>
+							<p class="mod-affects-saved-game text-lg"></p>
 							<fxs-vslot class="mod-dependencies hidden">
 								<fxs-header filigree-style="none"
 											class="mod-dependencies-title relative flex font-title text-lg uppercase text-secondary mb-3"
@@ -181,11 +181,8 @@ class ModsContent extends Panel {
         FocusManager.setFocus(modentry);
       }
       const checkbox = document.createElement("fxs-checkbox");
-      checkbox.classList.add("mod-checkbox-enabled", "origin-center", "inline-block");
-      checkbox.classList.add("ml-0\\.5", "scale-90");
-      if (mod.enabled) {
-        checkbox.setAttribute("selected", "true");
-      }
+      checkbox.className = "mod-checkbox-enabled scale-90 origin-center ml-0\\.5";
+      if (mod.enabled) checkbox.setAttribute("selected", "true");
       const handle = mod.handle;
       checkbox.addEventListener("action-activate", () => {
         const mod2 = Modding.getModInfo(handle);
@@ -281,11 +278,12 @@ class ModsContent extends Panel {
       console.error("screen-extras: showModDetails: Invalid selected mod handle!");
       return;
     }
-    this.modNameHeader.setAttribute("title", this.selectedMod.name);
+    const mod = this.selectedMod;
+    this.modNameHeader.setAttribute("title", mod.name);
     const authorElement = this.Root.querySelector(".mod-author");
     if (authorElement) {
-      if (!this.selectedMod.official) {
-        const author = Modding.getModProperty(this.selectedMod.handle, "Authors");
+      if (!mod.official) {
+        const author = Modding.getModProperty(mod.handle, "Authors");
         if (author) {
           authorElement.textContent = Locale.compose("LOC_UI_MOD_AUTHOR", author);
         } else {
@@ -295,13 +293,17 @@ class ModsContent extends Panel {
         authorElement.textContent = "";
       }
     }
-    if (this.selectedMod.created) {
-      this.modDateText.textContent = Locale.compose("LOC_UI_MOD_DATE", this.selectedMod.created);
+    if (mod.created) {
+      this.modDateText.textContent = Locale.compose("LOC_UI_MOD_DATE", mod.created);
     }
-    this.modDescriptionText.setAttribute("data-l10n-id", this.selectedMod.description);
-    if (this.selectedMod.dependsOn) {
+    const affectsSave = Modding.getModProperty(mod.handle, "AffectsSavedGames");
+    this.bzModAffectsSavedGame.textContent =
+      Locale.compose("LOC_UI_AFFECTS_SAVE") + " " +
+      Locale.compose(affectsSave === "0" ? "LOC_GENERIC_NO" : "LOC_GENERIC_YES");
+    this.modDescriptionText.setAttribute("data-l10n-id", mod.description);
+    if (mod.dependsOn) {
       this.modDependenciesContent.classList.remove("hidden");
-      this.selectedMod.dependsOn.forEach((dependecy) => {
+      mod.dependsOn.forEach((dependecy) => {
         const dependencyEntry = document.createElement("div");
         dependencyEntry.classList.add("mod-dependency", "relative");
         dependencyEntry.setAttribute("data-l10n-id", dependecy);
