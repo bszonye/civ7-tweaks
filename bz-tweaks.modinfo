@@ -28,19 +28,6 @@
         </Criteria>
     </ActionCriteria>
     <ActionGroups>
-        <ActionGroup id="bz-shell-extras" scope="shell" criteria="always">
-            <Properties>
-                <LoadOrder>10000</LoadOrder>
-            </Properties>
-            <Actions>
-                <ImportFiles>
-                    <Item>ui/shell/mods-content/mods-content.js</Item>
-                </ImportFiles>
-                <UIScripts>
-                    <Item>ui/shell/bz-extras.js</Item>
-                </UIScripts>
-            </Actions>
-        </ActionGroup>
         <ActionGroup id="bz-tweak-shell" scope="shell" criteria="always">
             <Properties>
                 <LoadOrder>50</LoadOrder>
