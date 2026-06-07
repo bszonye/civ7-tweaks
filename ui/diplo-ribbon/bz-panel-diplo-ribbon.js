@@ -1,4 +1,4 @@
-import { D as DiploRibbonData } from '/base-standard/ui/diplo-ribbon/model-diplo-ribbon.chunk.js';
+import { DiploRibbonData } from '/base-standard/ui/diplo-ribbon/model-diplo-ribbon.js';
 import '/base-standard/ui/diplo-ribbon/panel-diplo-ribbon.js';
 
 const DRD_createPlayerYieldsData = DiploRibbonData.createPlayerYieldsData;
