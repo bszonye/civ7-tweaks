@@ -48,6 +48,7 @@
             <Actions>
                 <ImportFiles>
                     <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
+                    <Item>ui-next/screens/legacies/triumph-card.css</Item>
                 </ImportFiles>
                 <UIScripts>
                     <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
