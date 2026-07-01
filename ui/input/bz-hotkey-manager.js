@@ -6,6 +6,7 @@ const modes = {
     DMT_INTERFACEMODE_MAP_TACK_CHOOSER: "dmt-map-tack-lens",
     DMT_INTERFACEMODE_PLACE_MAP_TACKS: "dmt-map-tack-lens",
     INTERFACEMODE_ACQUIRE_TILE: "fxs-acquire-tile-lens",
+    INTERFACEMODE_BONUS_PLACEMENT: "fxs-settler-lens",
     INTERFACEMODE_PLACE_BUILDING: "fxs-building-placement-lens",
 }
 
