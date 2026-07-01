@@ -30,7 +30,8 @@ HotkeyManager.handleInput = function(...args) {
                 if (LensManager.getActiveLens() != lens) {
                     LensManager.setActiveLens(lens);
                 } else {
-                    const lens = modes[InterfaceMode.getCurrent()] ?? "fxs-default-lens";
+                    const mode = InterfaceMode.getCurrent();
+                    const lens = modes[mode] ?? "fxs-default-lens";
                     LensManager.setActiveLens(lens);
                 }
                 return false;
