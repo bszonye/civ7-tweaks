@@ -1,5 +1,13 @@
 import HotkeyManager from '/core/ui/input/hotkey-manager.js';
 import LensManager from '/core/ui/lenses/lens-manager.js';
+import { InterfaceMode } from '/core/ui/interface-modes/interface-modes.js';
+
+const modes = {
+    DMT_INTERFACEMODE_MAP_TACK_CHOOSER: "dmt-map-tack-lens",
+    DMT_INTERFACEMODE_PLACE_MAP_TACKS: "dmt-map-tack-lens",
+    INTERFACEMODE_ACQUIRE_TILE: "fxs-acquire-tile-lens",
+    INTERFACEMODE_PLACE_BUILDING: "fxs-building-placement-lens",
+}
 
 const HM_handleInput = HotkeyManager.handleInput;
 HotkeyManager.handleInput = function(...args) {
@@ -21,7 +29,8 @@ HotkeyManager.handleInput = function(...args) {
                 if (LensManager.getActiveLens() != lens) {
                     LensManager.setActiveLens(lens);
                 } else {
-                    LensManager.setActiveLens("fxs-default-lens");
+                    const lens = modes[InterfaceMode.getCurrent()] ?? "fxs-default-lens";
+                    LensManager.setActiveLens(lens);
                 }
                 return false;
             }
