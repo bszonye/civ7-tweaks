@@ -37,7 +37,6 @@
                     <Item>ui/options/editors/bz-editor-keyboard-mapping.js</Item>
                 </UIScripts>
                 <UpdateDatabase>
-                    <Item>config/bz-input.xml</Item>
                     <Item>data/bz-tweak-shell.xml</Item>
                 </UpdateDatabase>
                 <UpdateText>
@@ -57,8 +56,6 @@
                 <UIScripts>
                     <Item>ui/bz-style/bz-style-tweaks.js</Item>
                     <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
-                    <Item>ui/input/bz-hotkey-manager.js</Item>
-                    <Item>ui/options/editors/bz-editor-keyboard-mapping.js</Item>
                 </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-age-progress.sql</Item>
