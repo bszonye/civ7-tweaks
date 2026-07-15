@@ -830,6 +830,12 @@ const PlotDetailsSection = (props) => {
             get children() {
               return createComponent(ConstructibleRows, {
                 get constructibles() {
+                  // TRIX: sort walls last
+                  props.constructibles.sort((a, b) => {
+                    const ainfo = GameInfo.Constructibles.lookup(a.type);
+                    const binfo = GameInfo.Constructibles.lookup(b.type);
+                    return binfo.Population - ainfo.Population
+                  });
                   return props.constructibles;
                 },
                 get district() {
@@ -1355,11 +1361,11 @@ const PlotTooltipComponent = (props) => {
       const isWorldFocused = createMemo(() => {
         return focusManager.activeElement() === document.body;
       });
-      createEffect(on([plotCoords, IsPlotTooltipVisible, isWorldFocused, isRevealed, isWorldDragging], ([currentPlotCoords, isVisible, currentIsWorldFocused, revealed, currentIsWorldDragging], prevValues) => {
+      createEffect(on([plotCoords, IsPlotTooltipVisible, isWorldFocused, isRevealed, isWorldDragging], ([currentPlotCoords, isVisible, currentIsWorldFocused, revealed, currentIsWorldDragging], _prevValues) => {
         if (!currentPlotCoords || !isVisible || !currentIsWorldFocused || !revealed || currentIsWorldDragging) {
           hidePlotTooltip();
         } else {
-          const prevPlotCoord = prevValues?.[0];
+          // const prevPlotCoord = prevValues?.[0];
           // if (currentPlotCoords.x !== prevPlotCoord?.x || currentPlotCoords.y !== prevPlotCoord?.y) {
           //   triggerContext.trigger(TriggerType.Blur, void 0);
           // }
