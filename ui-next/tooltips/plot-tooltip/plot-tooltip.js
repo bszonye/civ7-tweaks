@@ -67,8 +67,19 @@ const bzPill = (props) => {
   })();
 };
 
-// TRIX: change _tmpl$12 pill spacing from gap-2 to mb-0\\.5 gap-1\\.5
-var _tmpl$ = /* @__PURE__ */ template(`<div class="flex flex-row gap-2"></div>`), _tmpl$2 = /* @__PURE__ */ template(`<div class="flex items-center"></div>`), _tmpl$3 = /* @__PURE__ */ template(`<div></div>`), _tmpl$4 = /* @__PURE__ */ template(`<div class="flex flex-row"><span class="font-body text-xs text-accent-3"></span></div>`), _tmpl$5 = /* @__PURE__ */ template(`<div class="absolute top-0\\.5 right-2\\.5 size-7 flex items-center justify-center bg-contain bg-center bg-no-repeat"><div class="size-5 bg-contain bg-center bg-no-repeat"></div></div>`), _tmpl$6 = /* @__PURE__ */ template(`<div class="flex items-center font-body text-xs text-accent-3"></div>`), _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col justify-center grow-0 shrink"></div>`), _tmpl$8 = /* @__PURE__ */ template(`<div class="flex flex-row font-title text-sm text-negative"></div>`), _tmpl$9 = /* @__PURE__ */ template(`<div class="flex flex-row font-body text-xs text-accent-3"></div>`), _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-title text-sm text-accent-3"></div>`), _tmpl$11 = /* @__PURE__ */ template(`<div class=relative></div>`), _tmpl$12 = /* @__PURE__ */ template(`<div class="flex flex-row flex-wrap justify-center mt-1 mb-0\\.5 gap-1\\.5"></div>`);
+// TRIX: various styling changes
+var _tmpl$ = /* @__PURE__ */ template(`<div class="flex flex-row gap-2"></div>`),
+  _tmpl$2 = /* @__PURE__ */ template(`<div class="flex items-center"></div>`),
+  _tmpl$3 = /* @__PURE__ */ template(`<div></div>`),
+  _tmpl$4 = /* @__PURE__ */ template(`<div class="flex flex-row"><span class="font-body text-sm text-accent-3"></span></div>`),
+  _tmpl$5 = /* @__PURE__ */ template(`<div class="absolute top-0\\.5 right-2\\.5 size-7 flex items-center justify-center bg-contain bg-center bg-no-repeat"><div class="size-5 bg-contain bg-center bg-no-repeat"></div></div>`),
+  _tmpl$6 = /* @__PURE__ */ template(`<div class="flex items-center font-body text-xs text-accent-3"></div>`),
+  _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col justify-center grow-0 shrink"></div>`),
+  _tmpl$8 = /* @__PURE__ */ template(`<div class="flex flex-row font-title text-sm text-negative"></div>`),
+  _tmpl$9 = /* @__PURE__ */ template(`<div class="flex flex-row font-body text-xs text-accent-3"></div>`),
+  _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-title text-xs text-accent-3"></div>`),
+  _tmpl$11 = /* @__PURE__ */ template(`<div class=relative></div>`),
+  _tmpl$12 = /* @__PURE__ */ template(`<div class="flex flex-row flex-wrap justify-center mt-1 mb-0\\.5 gap-1\\.5"></div>`);
 const _PROTECTED_IMPORTS = [isFocusable];
 const [IsPlotTooltipVisible, SetIsPlotTooltipVisible] = createSignal(true);
 const ConstructibleRow = (props) => {
@@ -96,6 +107,7 @@ const ConstructibleRow = (props) => {
         get ["class"]() {
           return props.constructible.isImprovement ? "size-10" : "size-6";
         },
+        // TRIX: larger improvement icons
         isUrl: true,
         get name() {
           return props.constructible.icon;
@@ -191,6 +203,7 @@ const ConstructibleRow = (props) => {
         },
         children: (description) => createComponent(L10n.Stylize, {
           "class": "font-body text-xs text-accent-3",
+          // TRIX: resize text
           get text() {
             return description();
           }
@@ -263,6 +276,7 @@ const PlayerOwnerRow = (props) => {
         })
       }), createComponent(L10n.Stylize, {
         "class": "font-body text-xs text-accent-2",
+        // TRIX: resize text
         get text() {
           return displayName();
         },
@@ -282,6 +296,7 @@ const PlayerOwnerRow = (props) => {
       get fallback() {
         return createComponent(L10n.Stylize, {
           "class": "font-body text-xs text-accent-3",
+          // TRIX: resize text
           text: "{1_Term}: {2_Subject}",
           get args() {
             return ["LOC_PLOT_TOOLTIP_CONQUEROR", info().name];
@@ -291,6 +306,7 @@ const PlayerOwnerRow = (props) => {
       get children() {
         return createComponent(L10n.Stylize, {
           "class": "font-body text-xs text-accent-3",
+          // TRIX: resize text
           text: "{1_Term}: {2_Subject}",
           args: ["LOC_PLOT_TOOLTIP_CONQUEROR", "LOC_PLOT_TOOLTIP_INDEPENDENT_CONQUEROR"]
         });
@@ -412,6 +428,7 @@ const IndependentUnitInfo = (props) => {
     get fallback() {
       return createComponent(L10n.Stylize, {
         "class": "font-body text-xs text-accent-3",
+        // TRIX: resize text
         get text() {
           return actualCivName();
         }
@@ -420,6 +437,7 @@ const IndependentUnitInfo = (props) => {
     get children() {
       return createComponent(L10n.Stylize, {
         "class": "font-body text-xs text-accent-3",
+        // TRIX: resize text
         text: "LOC_CIVILIZATION_INDEPENDENT_SINGULAR",
         get args() {
           return [actualCivName()];
@@ -460,6 +478,7 @@ const PlayerUnitInfo = (props) => {
     get fallback() {
       return createComponent(L10n.Stylize, {
         "class": "font-body text-xs text-accent-3",
+        // TRIX: resize text
         get text() {
           return props.civName;
         }
@@ -468,6 +487,7 @@ const PlayerUnitInfo = (props) => {
     get children() {
       return createComponent(L10n.Stylize, {
         "class": "font-body text-xs text-accent-3",
+        // TRIX: resize text
         text: "{1_Name} ({LOC_PLOT_TOOLTIP_YOU})",
         get args() {
           return [props.civName];
@@ -515,6 +535,8 @@ const ResourceInfoRow = (props) => {
     get icon() {
       return createComponent(Icon, {
         "class": "size-10",
+        // TRIX
+        // "class": "size-7",
         isUrl: true,
         get name() {
           return iconCSS();
@@ -530,6 +552,7 @@ const ResourceInfoRow = (props) => {
         }
       }), null);
       insert(_el$10, createComponent(L10n.Stylize, {
+        // TRIX: add font styling
         "class": "font-body text-xs text-accent-3",
         get text() {
           return props.resource.Tooltip;
@@ -643,6 +666,7 @@ const ConstructibleRows = (props) => {
         }
       }), createComponent(Show, {
         get when() {
+          // TRIX: show warehouse bonuses for unique improvements
           const type = props.freeImprovement?.type;
           if (!type || props.constructibles.find(c => c.type == type)) return void 0;
           return props.freeImprovement;
@@ -665,6 +689,7 @@ const ConstructibleRows = (props) => {
             });
           },
           get children() {
+            // TRIX: show warehouse bonuses for unique improvements
             var _el$14 = _tmpl$10();
             insert(_el$14, createComponent(L10n.Stylize, {
               "class": "font-body text-2xs text-accent-2",
@@ -693,10 +718,10 @@ const PlotDetailsSection = (props) => {
   const hexResource = createMemo(() => getResource(props.plotCoord));
   const isDistantLands = createMemo(() => localPlayer.isDistantLands(props.plotCoord) ?? false);
   const freeImprovement = createMemo(() => {
-    if (props.constructibles.length > 0) {
-      // TODO
-      // return null;
-    }
+    // if (props.constructibles.length > 0) {
+    //   return null;
+    // }
+    // TRIX: unique improvements need this to show warehouse bonuses
     const currentDistrict = props.district;
     if (currentDistrict !== null && currentDistrict.type !== DistrictTypes.RURAL && currentDistrict.type !== DistrictTypes.WILDERNESS) {
       return null;
@@ -872,6 +897,7 @@ const PlotTooltipContent = (props) => {
   const oceanTerrainType = GameInfo.Terrains.find((t) => t.TerrainType === "TERRAIN_OCEAN")?.$index;
   const isOcean = createMemo(() => terrainType() === oceanTerrainType);
   const isMountain = createMemo(() => GameplayMap.isMountain(local.plotCoord.x, local.plotCoord.y));
+  // TRIX: get fresh water status
   const isFreshWater = createMemo(() => GameplayMap.isFreshWater(local.plotCoord.x, local.plotCoord.y));  // TRIX
   const oceanFreeConstructible = createMemo(() => {
     if (!isOcean()) {
@@ -911,6 +937,7 @@ const PlotTooltipContent = (props) => {
     }
   });
   const quarterKeyword = createMemo(() => district()?.isQuarter ? "LOC_PLOT_TOOLTIP_QUARTER" : void 0);
+  // TRIX: define this earlier for use in keywordPills
   const route = createMemo(() => getRouteData(local.plotCoord));
   const yields = createMemo(() => {
     if (!shouldShowOceanYields() || !shouldShowMountainYields()) {
@@ -930,14 +957,15 @@ const PlotTooltipContent = (props) => {
     if (feature().label && !feature().isNaturalWonder && !feature().volcano) {
       pills.push(feature().label);
     }
-    // TRIX: check for nonzero instead of negative values
-    if (featureDefinition()?.SightThroughModifier ?? 0) {
+    if ((featureDefinition()?.SightThroughModifier ?? 0) != 0) {
+      // TRIX: check for nonzero instead of negative values
       pills.push("LOC_PLOT_TOOLTIP_BLOCKS_SIGHT");
     }
-    if (featureDefinition()?.MovementChange ?? 0) {
+    if ((featureDefinition()?.MovementChange ?? 0) != 0) {
       pills.push("LOC_PLOT_TOOLTIP_ENDS_MOVEMENT");
     }
-    if (isFreshWater()) {  // TRIX
+    // TRIX: add Fresh Water pill
+    if (isFreshWater()) {
       if (playerID() == -1 || district()?.type == Game.getHash("DISTRICT_CITY_CENTER")) {
         pills.push("LOC_PLOTKEY_FRESHWATER");
       }
@@ -948,6 +976,7 @@ const PlotTooltipContent = (props) => {
     if (quarterKeyword()) {
       pills.push(quarterKeyword());
     }
+    // TRIX: move route pill into keywordPills
     if (route()) {
       pills.push({
         icon: route().type,
@@ -1022,11 +1051,11 @@ const PlotTooltipContent = (props) => {
       get children() {
         var _el$16 = _tmpl$11();
         insert(_el$16, createComponent(L10n.Stylize, {
-          "class": "text-2xs text-center",  // TRIX
-          // "class": "text-sm text-center",
+          "class": "text-2xs text-center",
+          // TRIX: resize text
           style: {
-            "line-height": "1.25"  // TRIX
-            // "line-height": "1rem"
+            "line-height": "1.25"
+            // TRIX: shrink subheader
           },
           get text() {
             return subheaderText();
@@ -1037,7 +1066,8 @@ const PlotTooltipContent = (props) => {
     }), null);
     insert(_el$15, createComponent(Show, {
       get when() {
-        return route() || keywordPills().length;
+        return keywordPills().length;
+        // TRIX: move route pill into keywordPills
       },
       get children() {
         var _el$17 = _tmpl$12();
@@ -1123,9 +1153,11 @@ const PlotTooltipContent = (props) => {
                   }
                 }), createComponent(L10n.Stylize, {
                   "class": "font-body text-xs",
+                  // TRIX: resize text
                   text: "LOC_PLOT_TOOLTIP_NATURAL_WONDER"
                 }), createComponent(L10n.Stylize, {
                   "class": "font-body text-xs",
+                  // TRIX: resize text
                   get text() {
                     return feature().tooltip;
                   }
@@ -1169,15 +1201,16 @@ const PlotTooltipContent = (props) => {
             return yieldBarData();
           },
           variant: "compact",
-          "class": "grow flex-wrap justify-center mt-1\\.5 mb-0\\.5"  // TRIX
-          // "class": "grow flex-wrap justify-center mt-1"
+          "class": "grow flex-wrap justify-center mt-1\\.5 mb-1"
+          // TRIX: adjust whitespace
         }), createComponent(Show, {
           get when() {
             return totalYields() > 0;
           },
           get children() {
             return createComponent(L10n.Stylize, {
-              "class": "text-center",
+              "class": "text-xs text-center",
+              // TRIX: resize text
               text: "LOC_PLOT_TOTAL_YIELDS",
               get args() {
                 return [Locale.toNumber(totalYields(), "0.0")];
@@ -1211,7 +1244,8 @@ const PlotTooltipContent = (props) => {
     return _el$15;
   })();
 };
-const cameraPanActions = /* @__PURE__ */ new Set(["keyboard-nav-up", "keyboard-nav-down", "keyboard-nav-left", "keyboard-nav-right", "camera-pan", "touch-pan", /* TRIX */ "mousebutton-left"]);
+const cameraPanActions = /* @__PURE__ */ new Set(["mousebutton-left", "keyboard-nav-up", "keyboard-nav-down", "keyboard-nav-left", "keyboard-nav-right", "camera-pan", "touch-pan"]);
+// TRIX: add mouse button to camera pan actions
 function getPlotTooltipKind(plotCoord) {
   const activeLens = LensManager.getActiveLens();
   if (activeLens === "fxs-settler-lens") {
@@ -1324,10 +1358,10 @@ const PlotTooltipComponent = (props) => {
           hidePlotTooltip();
         } else {
           const prevPlotCoord = prevValues?.[0];
-          if (currentPlotCoords.x !== prevPlotCoord?.x || currentPlotCoords.y !== prevPlotCoord?.y) {
-            // TRIX: skip this for smooth tile transitions
-            // triggerContext.trigger(TriggerType.Blur, void 0);
-          }
+          // if (currentPlotCoords.x !== prevPlotCoord?.x || currentPlotCoords.y !== prevPlotCoord?.y) {
+          //   triggerContext.trigger(TriggerType.Blur, void 0);
+          // }
+          // TRIX: skip this for smooth tile transitions
           triggerWithDelay(currentPlotCoords);
         }
       }));
