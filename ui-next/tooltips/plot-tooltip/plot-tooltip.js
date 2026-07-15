@@ -109,7 +109,7 @@ const BZ_STYLE = {
     debug: { "background-color": `${BZ_COLOR.bronze6}99`, },
     // movement & obstacle types
     TERRAIN_HILL: { "background-color": BZ_COLOR.hill, },
-    TERRAIN_OCEAN: {},  // don't need to highlight this
+    // TERRAIN_OCEAN: {},  // don't need to highlight this
     FEATURE_ATOLL: { "background-color": BZ_COLOR.aquatic, color: BZ_COLOR.accent1, },
     FEATURE_CLASS_FLOODPLAIN:  { "background-color": BZ_COLOR.floodplain, },
     FEATURE_CLASS_VEGETATED: { "background-color": BZ_COLOR.vegetated, },
@@ -1035,6 +1035,8 @@ const PlotTooltipContent = (props) => {
     }
     return constructibles().length > 0 || mountainFreeConstructible() !== -1;
   });
+  // TRIX: enable terrain highlighting
+  const terrainDefinition = createMemo(() => GameInfo.Terrains.lookup(terrainType()));
   const featureDefinition = createMemo(() => GameInfo.Features.lookup(featureType()));
   const districtKeyword = createMemo(() => {
     const districtType = district() ? GameInfo.Districts.lookup(district().type)?.DistrictType : void 0;
@@ -1066,6 +1068,11 @@ const PlotTooltipContent = (props) => {
   const totalYields = createMemo(() => yields().reduce((sum, y) => sum + y.amount, 0));
   const keywordPills = createMemo(() => {
     const pills = [];
+    if (BZ_STYLE[terrainDefinition().TerrainType] != null) {
+      const style = BZ_STYLE[terrainDefinition().TerrainType];
+      const text = terrainDefinition().Name;
+      pills.push({ style, text });
+    }
     if (feature().label && !feature().isNaturalWonder && !feature().volcano) {
       console.warn(`TRIX ${JSON.stringify(featureDefinition())}`);
       const style =
@@ -1075,13 +1082,13 @@ const PlotTooltipContent = (props) => {
       const text = Locale.compose(label).replace(/\s*\(.*\)|\s*（.*）/, "");
       pills.push({ style, text });
     }
-    if ((featureDefinition()?.SightThroughModifier ?? 0) != 0) {
-      // TRIX: check for nonzero instead of negative values
+    if ((featureDefinition()?.SightThroughModifier ?? 0) < 0) {
+      // TRIX: check for nonzero instead of negative values?
       const style = BZ_STYLE[featureDefinition().FeatureClassType] ?? BZ_ALERT.note;
       const text = "LOC_PLOT_TOOLTIP_BLOCKS_SIGHT";
       pills.push({ style, text });
     }
-    if ((featureDefinition()?.MovementChange ?? 0) != 0) {
+    if ((featureDefinition()?.MovementChange ?? 0) < 0) {
       pills.push("LOC_PLOT_TOOLTIP_ENDS_MOVEMENT");
     }
     // TRIX: add Fresh Water pill
