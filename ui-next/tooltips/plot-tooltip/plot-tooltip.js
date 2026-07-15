@@ -68,7 +68,7 @@ const bzPill = (props) => {
 };
 
 // TRIX: change _tmpl$12 pill spacing from gap-2 to mb-0\\.5 gap-1\\.5
-var _tmpl$ = /* @__PURE__ */ template(`<div class="flex flex-row gap-2"></div>`), _tmpl$2 = /* @__PURE__ */ template(`<div class="flex items-center"></div>`), _tmpl$3 = /* @__PURE__ */ template(`<div></div>`), _tmpl$4 = /* @__PURE__ */ template(`<div class="flex flex-row"><span class="font-body text-xs text-accent-3"></span></div>`), _tmpl$5 = /* @__PURE__ */ template(`<div class="absolute top-0\\.5 right-2\\.5 size-7 flex items-center justify-center bg-contain bg-center bg-no-repeat"><div class="size-5 bg-contain bg-center bg-no-repeat"></div></div>`), _tmpl$6 = /* @__PURE__ */ template(`<div class="flex items-center font-body text-sm text-accent-3"></div>`), _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col justify-center grow-0 shrink"></div>`), _tmpl$8 = /* @__PURE__ */ template(`<div class="flex flex-row font-title text-sm text-negative"></div>`), _tmpl$9 = /* @__PURE__ */ template(`<div class="flex flex-row font-body text-sm text-accent-3"></div>`), _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-body text-sm"></div>`), _tmpl$11 = /* @__PURE__ */ template(`<div class=relative></div>`), _tmpl$12 = /* @__PURE__ */ template(`<div class="flex flex-row flex-wrap justify-center mt-1 mb-0\\.5 gap-1\\.5"></div>`);
+var _tmpl$ = /* @__PURE__ */ template(`<div class="flex flex-row gap-2"></div>`), _tmpl$2 = /* @__PURE__ */ template(`<div class="flex items-center"></div>`), _tmpl$3 = /* @__PURE__ */ template(`<div></div>`), _tmpl$4 = /* @__PURE__ */ template(`<div class="flex flex-row"><span class="font-body text-xs text-accent-3"></span></div>`), _tmpl$5 = /* @__PURE__ */ template(`<div class="absolute top-0\\.5 right-2\\.5 size-7 flex items-center justify-center bg-contain bg-center bg-no-repeat"><div class="size-5 bg-contain bg-center bg-no-repeat"></div></div>`), _tmpl$6 = /* @__PURE__ */ template(`<div class="flex items-center font-body text-xs text-accent-3"></div>`), _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col justify-center grow-0 shrink"></div>`), _tmpl$8 = /* @__PURE__ */ template(`<div class="flex flex-row font-title text-sm text-negative"></div>`), _tmpl$9 = /* @__PURE__ */ template(`<div class="flex flex-row font-body text-xs text-accent-3"></div>`), _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-title text-sm text-accent-3"></div>`), _tmpl$11 = /* @__PURE__ */ template(`<div class=relative></div>`), _tmpl$12 = /* @__PURE__ */ template(`<div class="flex flex-row flex-wrap justify-center mt-1 mb-0\\.5 gap-1\\.5"></div>`);
 const _PROTECTED_IMPORTS = [isFocusable];
 const [IsPlotTooltipVisible, SetIsPlotTooltipVisible] = createSignal(true);
 const ConstructibleRow = (props) => {
@@ -93,7 +93,9 @@ const ConstructibleRow = (props) => {
   return createComponent(TicketRow, {
     get icon() {
       return createComponent(Icon, {
-        "class": "size-6",
+        get ["class"]() {
+          return props.constructible.isImprovement ? "size-10" : "size-6";
+        },
         isUrl: true,
         get name() {
           return props.constructible.icon;
@@ -188,7 +190,7 @@ const ConstructibleRow = (props) => {
           return props.constructible.isWonder && props.constructible.description;
         },
         children: (description) => createComponent(L10n.Stylize, {
-          "class": "font-body text-sm text-accent-3",
+          "class": "font-body text-xs text-accent-3",
           get text() {
             return description();
           }
@@ -260,7 +262,7 @@ const PlayerOwnerRow = (props) => {
           }
         })
       }), createComponent(L10n.Stylize, {
-        "class": "font-title text-sm text-accent-2",
+        "class": "font-body text-xs text-accent-2",
         get text() {
           return displayName();
         },
@@ -279,7 +281,7 @@ const PlayerOwnerRow = (props) => {
       },
       get fallback() {
         return createComponent(L10n.Stylize, {
-          "class": "font-body text-sm text-accent-3",
+          "class": "font-body text-xs text-accent-3",
           text: "{1_Term}: {2_Subject}",
           get args() {
             return ["LOC_PLOT_TOOLTIP_CONQUEROR", info().name];
@@ -288,7 +290,7 @@ const PlayerOwnerRow = (props) => {
       },
       get children() {
         return createComponent(L10n.Stylize, {
-          "class": "font-body text-sm text-accent-3",
+          "class": "font-body text-xs text-accent-3",
           text: "{1_Term}: {2_Subject}",
           args: ["LOC_PLOT_TOOLTIP_CONQUEROR", "LOC_PLOT_TOOLTIP_INDEPENDENT_CONQUEROR"]
         });
@@ -409,7 +411,7 @@ const IndependentUnitInfo = (props) => {
     },
     get fallback() {
       return createComponent(L10n.Stylize, {
-        "class": "font-body text-sm text-accent-3",
+        "class": "font-body text-xs text-accent-3",
         get text() {
           return actualCivName();
         }
@@ -417,7 +419,7 @@ const IndependentUnitInfo = (props) => {
     },
     get children() {
       return createComponent(L10n.Stylize, {
-        "class": "font-body text-sm text-accent-3",
+        "class": "font-body text-xs text-accent-3",
         text: "LOC_CIVILIZATION_INDEPENDENT_SINGULAR",
         get args() {
           return [actualCivName()];
@@ -457,7 +459,7 @@ const PlayerUnitInfo = (props) => {
     },
     get fallback() {
       return createComponent(L10n.Stylize, {
-        "class": "font-body text-sm text-accent-3",
+        "class": "font-body text-xs text-accent-3",
         get text() {
           return props.civName;
         }
@@ -465,7 +467,7 @@ const PlayerUnitInfo = (props) => {
     },
     get children() {
       return createComponent(L10n.Stylize, {
-        "class": "font-body text-sm text-accent-3",
+        "class": "font-body text-xs text-accent-3",
         text: "{1_Name} ({LOC_PLOT_TOOLTIP_YOU})",
         get args() {
           return [props.civName];
@@ -512,7 +514,7 @@ const ResourceInfoRow = (props) => {
   }), createComponent(TicketRow, {
     get icon() {
       return createComponent(Icon, {
-        "class": "size-7",
+        "class": "size-10",
         isUrl: true,
         get name() {
           return iconCSS();
@@ -528,6 +530,7 @@ const ResourceInfoRow = (props) => {
         }
       }), null);
       insert(_el$10, createComponent(L10n.Stylize, {
+        "class": "font-body text-xs text-accent-3",
         get text() {
           return props.resource.Tooltip;
         }
@@ -640,6 +643,8 @@ const ConstructibleRows = (props) => {
         }
       }), createComponent(Show, {
         get when() {
+          const type = props.freeImprovement?.type;
+          if (!type || props.constructibles.find(c => c.type == type)) return void 0;
           return props.freeImprovement;
         },
         children: (freeInfo) => [createComponent(Show, {
@@ -661,8 +666,13 @@ const ConstructibleRows = (props) => {
           },
           get children() {
             var _el$14 = _tmpl$10();
-            insert(_el$14, createComponent(L10n.Compose, {
-              text: "LOC_PLOT_TOOLTIP_GROWTH_IMPROVEMENT_PREFIX_ONLY"
+            insert(_el$14, createComponent(L10n.Stylize, {
+              "class": "font-body text-2xs text-accent-2",
+              get text() {
+                return props.constructibles.length ?
+                  "LOC_ATTR_YIELD_FROM_WAREHOUSES" :
+                  "LOC_PLOT_TOOLTIP_GROWTH_IMPROVEMENT_PREFIX_ONLY";
+              }
             }), null);
             insert(_el$14, createComponent(L10n.Compose, {
               get text() {
@@ -684,7 +694,8 @@ const PlotDetailsSection = (props) => {
   const isDistantLands = createMemo(() => localPlayer.isDistantLands(props.plotCoord) ?? false);
   const freeImprovement = createMemo(() => {
     if (props.constructibles.length > 0) {
-      return null;
+      // TODO
+      // return null;
     }
     const currentDistrict = props.district;
     if (currentDistrict !== null && currentDistrict.type !== DistrictTypes.RURAL && currentDistrict.type !== DistrictTypes.WILDERNESS) {
@@ -1111,10 +1122,10 @@ const PlotTooltipContent = (props) => {
                     return feature().label;
                   }
                 }), createComponent(L10n.Stylize, {
-                  "class": "font-body text-sm",
+                  "class": "font-body text-xs",
                   text: "LOC_PLOT_TOOLTIP_NATURAL_WONDER"
                 }), createComponent(L10n.Stylize, {
-                  "class": "font-body text-sm",
+                  "class": "font-body text-xs",
                   get text() {
                     return feature().tooltip;
                   }
