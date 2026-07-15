@@ -49,6 +49,7 @@
                 <ImportFiles>
                     <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
                     <Item>ui/bz-style/bz-style-tweaks.css</Item>
+                    <Item>ui-next/tooltips/plot-tooltip/plot-tooltip.js</Item>
                 </ImportFiles>
                 <UIScripts>
                     <Item>ui/bz-style/bz-style-tweaks.js</Item>
