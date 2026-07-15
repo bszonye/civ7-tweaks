@@ -215,9 +215,11 @@ const ConstructibleRow = (props) => {
 const SpecialistsRow = (props) => createComponent(TicketRow, {
   get icon() {
     return createComponent(Icon, {
-      "class": "size-5",
+      "class": "size-6",
+      // TRIX: resize icon
       isUrl: true,
-      name: "url(blp:agecard_crisis_specialists)"
+      name: "url(blp:specialist_tile_pip_full)"
+      // TRIX: better icon
     });
   },
   get children() {
