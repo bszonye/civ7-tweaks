@@ -28,6 +28,104 @@ import { hasRandomEventData, RandomEventPlotTooltipContent } from './random-even
 import { hasSettlementRecommendationData, SettlementRecommendationPlotTooltipContent } from './settlement-recommendation-content.js';
 import { UnitFlag } from './unit-flag.js';
 
+// TRIX: prevent flicker
+Controls.preloadImage(UI.getIcon("ROUTE_ROAD"), "plot-tooltip");
+Controls.preloadImage(UI.getIcon("ROUTE_RAILROAD"), "plot-tooltip");
+
+// color palette
+const BZ_COLOR = {
+    // game colors
+    silver: "#4c5366",  // = primary
+    bronze: "#e5d2ac",  // = secondary
+    primary: "#4c5366",
+    primary1: "#8d97a6",
+    primary2: "#4c5366",
+    primary3: "#333640",
+    primary4: "#23252b",
+    primary5: "#12151f",
+    secondary: "#e5d2ac",
+    secondary1: "#e5d2ac",
+    secondary2: "#8c7e62",
+    secondary3: "#4c473d",
+    accent: "#616266",
+    accent1: "#e5e5e5",
+    accent2: "#c2c4cc",
+    accent3: "#9da0a6",
+    accent4: "#85878c",
+    accent5: "#616266",
+    accent6: "#05070d",
+    // bronze shades
+    bronze1: "#f9ecd2",
+    bronze2: "#e5d2ac",  // = secondary1
+    bronze3: "#c7b28a",
+    bronze4: "#a99670",
+    bronze5: "#8c7e62",  // = secondary 2
+    bronze6: "#4c473d",  // = secondary 3
+    // rules background
+    rules: "#8c7e6233",
+    // alert colors
+    black: "#000000",
+    danger: "#af1b1c99",  // danger = militaristic 60% opacity
+    caution: "#cea92f",  // caution = healthbar-medium
+    note: "#ff800033",  // note = orange 20% opacity
+    // geographic colors
+    hill: "#ea995266",  // Rough terrain = orange 40% opacity
+    aquatic: "#00ffee66",  // Aquaticy = teal 40% opacity
+    vegetated: "#aaff0033",  // Vegetated features = green 20% opacity
+    wet: "#55ffff33",  // Wet features = teal 20% opacity
+    floodplain: "#ff800033",  // Floodplains = orange 20% opacity
+    river: "#55aaff66",  // Rivers = azure 40% opacity
+    road: "#e5d2accc",  // Roads = bronze 80% opacity
+    rail: "#c2c4cccc",  // Railroads = silver 80% opacity
+    bridge: "#d4c9c4cc",  // Bridges = warm gray 80% opacity
+    // yield types
+    food: "#80b34d",        //  90° 40 50 green
+    production: "#a33d29",  //  10° 60 40 red
+    gold: "#f6ce55",        //  45° 90 65 yellow
+    science: "#6ca6e0",     // 210° 65 65 cyan
+    culture: "#5c5cd6",     // 240° 60 60 violet
+    happiness: "#f5993d",   //  30° 90 60 orange
+    diplomacy: "#afb7cf",   // 225° 25 75 gray
+    // independent power types
+    militaristic: "#af1b1c",
+    scientific: "#4d7c96",
+    economic: "#ffd553",
+    cultural: "#892bb3",
+    expansionist: "#00a717",
+    diplomatic: "#255be4",
+};
+const BZ_ALERT = {
+    primary: { "background-color": BZ_COLOR.primary, },
+    secondary: { "background-color": BZ_COLOR.secondary, color: BZ_COLOR.black, },
+    title: { "fxs-font-gradient-color": BZ_COLOR.bronze1, color: BZ_COLOR.bronze2, },
+    black: { "background-color": BZ_COLOR.black, },
+    danger: { "background-color": BZ_COLOR.danger, },
+    enemy: { "background-color": BZ_COLOR.danger, },
+    caution: { "background-color": BZ_COLOR.caution, color: BZ_COLOR.black, },
+    note: { "background-color": BZ_COLOR.note, },
+    DEBUG: { "background-color": "#80808080", },
+}
+const BZ_STYLE = {
+    debug: { "background-color": `${BZ_COLOR.bronze6}99`, },
+    // movement & obstacle types
+    TERRAIN_HILL: { "background-color": BZ_COLOR.hill, },
+    TERRAIN_OCEAN: {},  // don't need to highlight this
+    FEATURE_ATOLL: { "background-color": BZ_COLOR.aquatic, color: BZ_COLOR.accent1, },
+    FEATURE_CLASS_FLOODPLAIN:  { "background-color": BZ_COLOR.floodplain, },
+    FEATURE_CLASS_VEGETATED: { "background-color": BZ_COLOR.vegetated, },
+    // FEATURE_CLASS_WET: { "background-color": BZ_COLOR.wet, },
+    FEATURE_MANGROVE: { "background-color": BZ_COLOR.wet, },
+    FEATURE_MARSH: { "background-color": BZ_COLOR.wet, },
+    FEATURE_TUNDRA_BOG: { "background-color": BZ_COLOR.wet, },
+    FEATURE_VOLCANO: BZ_ALERT.caution,
+    LOC_VOLCANO_NOT_ACTIVE: BZ_ALERT.note,
+    RIVER_MINOR: { "background-color": BZ_COLOR.river, },
+    RIVER_NAVIGABLE: { "background-color": BZ_COLOR.river, },
+    ROUTE_BRIDGE: { "background-color": BZ_COLOR.bridge, color: BZ_COLOR.black, },
+    ROUTE_RAILROAD: { "background-color": BZ_COLOR.rail, color: BZ_COLOR.black, },
+    ROUTE_ROAD: { "background-color": BZ_COLOR.road, color: BZ_COLOR.black, },
+}
+
 const bzPill = (props) => {
   const [local, other] = splitProps(props, ["class", "color", "backgroundStyle", "children", "icon", "text"]);
   const color = () => local.color ?? "#23252b";
@@ -41,10 +139,11 @@ const bzPill = (props) => {
         return `text-xs min-h-5 px-2 flex items-center rounded-full leading-tight ${local.class ?? ""}`;
       },
       get style() {
-        return {
+        const s = {
           border: "1px solid #53565D",
           ...backgroundStyle()
         };
+        return s;
       }
     }, other), false, true);
     insert(_el$, createComponent(Show, {
@@ -835,9 +934,11 @@ const PlotDetailsSection = (props) => {
                 get constructibles() {
                   // TRIX: sort walls last
                   props.constructibles.sort((a, b) => {
-                    const ainfo = GameInfo.Constructibles.lookup(a.type);
-                    const binfo = GameInfo.Constructibles.lookup(b.type);
-                    return binfo.Population - ainfo.Population
+                    const adef = GameInfo.Constructibles.lookup(a.type);
+                    const bdef = GameInfo.Constructibles.lookup(b.type);
+                    const awall = adef?.ExistingDistrictOnly ?? false;
+                    const bwall = bdef?.ExistingDistrictOnly ?? false;
+                    return +(awall) - +(bwall);
                   });
                   return props.constructibles;
                 },
@@ -966,11 +1067,19 @@ const PlotTooltipContent = (props) => {
   const keywordPills = createMemo(() => {
     const pills = [];
     if (feature().label && !feature().isNaturalWonder && !feature().volcano) {
-      pills.push(feature().label);
+      console.warn(`TRIX ${JSON.stringify(featureDefinition())}`);
+      const style =
+        BZ_STYLE[featureDefinition().FeatureType] ??
+        BZ_STYLE[featureDefinition().FeatureClassType];
+      const label = feature().label;
+      const text = Locale.compose(label).replace(/\s*\(.*\)|\s*（.*）/, "");
+      pills.push({ style, text });
     }
     if ((featureDefinition()?.SightThroughModifier ?? 0) != 0) {
       // TRIX: check for nonzero instead of negative values
-      pills.push("LOC_PLOT_TOOLTIP_BLOCKS_SIGHT");
+      const style = BZ_STYLE[featureDefinition().FeatureClassType] ?? BZ_ALERT.note;
+      const text = "LOC_PLOT_TOOLTIP_BLOCKS_SIGHT";
+      pills.push({ style, text });
     }
     if ((featureDefinition()?.MovementChange ?? 0) != 0) {
       pills.push("LOC_PLOT_TOOLTIP_ENDS_MOVEMENT");
@@ -989,10 +1098,10 @@ const PlotTooltipContent = (props) => {
     }
     // TRIX: move route pill into keywordPills
     if (route()) {
-      pills.push({
-        icon: route().type,
-        text: route().name,
-      });
+      // const style = BZ_STYLE[route().type];
+      const icon = route().type;
+      const text = route().name;
+      pills.push({ icon, text });
     }
     return pills;
   });
@@ -1087,9 +1196,10 @@ const PlotTooltipContent = (props) => {
             return keywordPills();
           },
           children: (keyword) => createComponent(bzPill, {
-            text: keyword.text ?? keyword,
-            icon: keyword.icon,
             color: keyword.color,
+            backgroundStyle: keyword.style,
+            icon: keyword.icon,
+            text: keyword.text ?? keyword,
           })
         }), null);
         return _el$17;

@@ -49,6 +49,7 @@ export default [
                 MapCities: "readonly",
                 MapConstructibles: "readonly",
                 MapPlotEffects: "readonly",
+                MapStorms: "readonly",
                 MapUnits: "readonly",
                 ModAllowance: "readonly",
                 Modding: "readonly",
