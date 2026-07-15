@@ -77,7 +77,7 @@ var _tmpl$ = /* @__PURE__ */ template(`<div class="flex flex-row gap-2"></div>`)
   _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col justify-center grow-0 shrink"></div>`),
   _tmpl$8 = /* @__PURE__ */ template(`<div class="flex flex-row font-title text-sm text-negative"></div>`),
   _tmpl$9 = /* @__PURE__ */ template(`<div class="flex flex-row font-body text-xs text-accent-3"></div>`),
-  _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-title text-xs text-accent-3"></div>`),
+  _tmpl$10 = /* @__PURE__ */ template(`<div class="flex flex-col font-title text-sm text-accent-3"></div>`),
   _tmpl$11 = /* @__PURE__ */ template(`<div class=relative></div>`),
   _tmpl$12 = /* @__PURE__ */ template(`<div class="flex flex-row flex-wrap justify-center mt-1 mb-0\\.5 gap-1\\.5"></div>`);
 const _PROTECTED_IMPORTS = [isFocusable];
@@ -548,7 +548,8 @@ const ResourceInfoRow = (props) => {
     get children() {
       var _el$10 = _tmpl$7();
       insert(_el$10, createComponent(L10n.Stylize, {
-        "class": "font-title text-sm uppercase",
+        "class": "font-title text-sm uppercase text-secondary",
+        // TRIX: add color
         get text() {
           return props.resource.Name;
         }
@@ -683,7 +684,9 @@ const ConstructibleRows = (props) => {
         }), createComponent(TicketRow, {
           get icon() {
             return createComponent(Icon, {
-              "class": "size-10",
+              get ["class"]() {
+                return props.constructibles.length ? "size-10" : "size-10 opacity-50";
+              },
               isUrl: true,
               get name() {
                 return freeInfo().icon;
