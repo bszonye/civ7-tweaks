@@ -54,7 +54,6 @@
                 </ImportFiles>
                 <UIScripts>
                     <Item>ui/bz-style/bz-style-tweaks.js</Item>
-                    <Item>ui/diplo-ribbon/bz-panel-diplo-ribbon.js</Item>
                 </UIScripts>
                 <UpdateDatabase>
                     <Item>data/bz-tweak-age-progress.sql</Item>

@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Database>
     <IconDefinitions>
-        <Replace>
-            <ID>PLAYER_RELATIONSHIP_AT_WAR</ID>
-            <Path>blp:dip_warswordshield</Path>
-            <!--
-            <Path>blp:ntf_declare_war</Path>
-            <Path>blp:pant_war</Path>
-            -->
-        </Replace>
     </IconDefinitions>
 </Database>
