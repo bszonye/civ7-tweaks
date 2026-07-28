@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <InputActions>
+        <Replace ActionId="bz-open-minor-powers" DeviceType="Keyboard" Name="LOC_UI_DIPLOMACY_MINOR_POWERS_TOOLTIP" Description="LOC_UI_DIPLOMACY_MINOR_POWERS_TOOLTIP" />
+    </InputActions>
+    <InputContextConstraints>
+        <Replace ActionId="bz-open-minor-powers" ContextId="World"/>
+        <Replace ActionId="bz-open-minor-powers" ContextId="Unit"/>
+    </InputContextConstraints>
+    <InputActionDefaultGestures>
+        <Replace ActionId="bz-open-minor-powers" Index="0" GestureType="KBMouse" GestureData="KEY_SHIFT+KEY_M"/>
+    </InputActionDefaultGestures>
+</Database>
