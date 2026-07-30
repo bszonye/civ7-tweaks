@@ -201,9 +201,9 @@ class PanelDiploRibbon extends Panel {
         this.diploRibbons = [];
         // TRIX: make room for high player counts
         if (11 <= numShown) this.Root.classList.remove("right-24");
-        this.Root.classList.toggle("top-8", numShown < 13);
+        this.Root.classList.toggle("top-8", numShown < 11);
         this.Root.classList.toggle("right-4", 11 <= numShown && numShown < 20);
-        this.Root.classList.toggle("top-40", 13 <= numShown);
+        this.Root.classList.toggle("top-40", 11 <= numShown);
         this.Root.classList.toggle("-right-4", 20 <= numShown);
         // TRIX: backdrop for screenshots
         if (BZ_BACKDROP) this.Root.classList.add("bg-primary-4", "h-52");
