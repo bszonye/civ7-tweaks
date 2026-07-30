@@ -54,7 +54,7 @@ class PanelDiploRibbon extends Panel {
     attributeButton = null;
     diploRibbons = [];
     firstLeaderIndex = 0;
-  techCivicPopupVisibilityListener = this.techCivicPopupVisibility.bind(this);
+    techCivicPopupVisibilityListener = this.techCivicPopupVisibility.bind(this);
     constructor(root) {
         super(root);
         if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_DIALOG") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_CALL_TO_ARMS")) {
@@ -85,22 +85,7 @@ class PanelDiploRibbon extends Panel {
     }
     onAttach() {
         super.onAttach();
-        if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_PEACE_DEAL") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_PROJECT_REACTION")) {
-            return;
-        } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_DIALOG") || InterfaceMode.isInInterfaceMode("INTERFACEMODE_CALL_TO_ARMS")) {
-            this.Root.classList.add("diplomacy-dialog-ribbon");
-        } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
-      const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
-      if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
-                return;
-            } else {
-                if (DiplomacyManager.selectedPlayerID == GameContext.localPlayerID) {
-                    this.Root.classList.add("local-player-diplomacy-hub-ribbon");
-                } else {
-                    this.Root.classList.add("other-player-diplomacy-hub-ribbon");
-                }
-            }
-        }
+        this.refreshState();
         window.addEventListener(ActiveDeviceTypeChangedEventName, this.activeDeviceTypeListener);
         window.addEventListener("engine-input", this.engineCaptureAllInputListener, true);
         window.addEventListener("interface-mode-changed", this.interfaceModeChangedListener);
@@ -189,6 +174,8 @@ class PanelDiploRibbon extends Panel {
             this.numLeadersToShow = isDiplomacyHub ? 6 : BZ_MAX_LEADERS;
         } else if (window.innerWidth >= Layout.pixelsToScreenPixels(1599) && !isMobileViewExperience) {
             this.numLeadersToShow = isDiplomacyHub ? 5 : 6;
+        } else if (window.innerWidth >= Layout.pixelsToScreenPixels(1366) && !isMobileViewExperience) {
+          this.numLeadersToShow = isDiplomacyHub ? 3 : 5;
         } else {
             this.numLeadersToShow = isDiplomacyHub ? 3 : 5;
         }
@@ -1179,22 +1166,37 @@ class PanelDiploRibbon extends Panel {
         ContextManager.push("screen-attribute-trees", { singleton: true, createMouseGuard: true });
     }
     onInterfaceModeChanged() {
-        if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_PEACE_DEAL")) {
-            this.Root.classList.add("hidden");
-        } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_DIALOG")) {
-            this.Root.classList.add("diplomacy-dialog-ribbon");
-            this.Root.classList.remove("other-player-diplomacy-hub-ribbon");
-            this.Root.classList.remove("local-player-diplomacy-hub-ribbon");
-            this.populateFlags();
-        } else if (InterfaceMode.isInInterfaceMode("INTERFACEMODE_DIPLOMACY_HUB")) {
-            const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
-            if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
+        this.refreshState();
+    }
+    refreshState() {
+        this.Root.classList.remove("hidden");
+        switch (InterfaceMode.getCurrent()) {
+            case "INTERFACEMODE_PEACE_DEAL":
                 this.Root.classList.add("hidden");
-            } else {
-                this.Root.classList.remove("hidden");
+                break;
+            case "INTERFACEMODE_DIPLOMACY_DIALOG":
+                this.Root.classList.add("diplomacy-dialog-ribbon");
+                this.Root.classList.remove("other-player-diplomacy-hub-ribbon");
+                this.Root.classList.remove("local-player-diplomacy-hub-ribbon");
+                this.populateFlags();
+                break;
+            case "INTERFACEMODE_CALL_TO_ARMS":
+                this.Root.classList.add("diplomacy-dialog-ribbon");
+                break;
+            case "INTERFACEMODE_DIPLOMACY_HUB": {
+                const targetPlayer = Players.get(DiplomacyManager.selectedPlayerID);
+                if (targetPlayer && (targetPlayer.isIndependent || targetPlayer.isMinor)) {
+                    this.Root.classList.add("hidden");
+                    return;
+                } else {
+                    if (DiplomacyManager.selectedPlayerID == GameContext.localPlayerID) {
+                        this.Root.classList.add("local-player-diplomacy-hub-ribbon");
+                    } else {
+                        this.Root.classList.add("other-player-diplomacy-hub-ribbon");
+                    }
+                }
+                break;
             }
-        } else {
-            this.Root.classList.remove("hidden");
         }
     }
     onInputContextChanged(contextData) {
@@ -1230,6 +1232,29 @@ class PanelDiploRibbon extends Panel {
     window.dispatchEvent(new UpdateDiploRibbonEvent());
   }
 }
+function cacheLeaderAssets() {
+    const portraits = [];
+    for (const playerData of DiploRibbonData.playerData) {
+        const iconContexts = ["LEADER_ANGRY", "LEADER_HAPPY"];
+        const url = UI.getIconURL(playerData.leaderType);
+        if (url) {
+            portraits.push(url);
+        }
+        for (const context of iconContexts) {
+            const url2 = UI.getIconURL(playerData.leaderType, context);
+            if (url2) {
+                portraits.push(url2);
+            }
+        }
+        if (playerData.relationshipIcon != "") {
+            portraits.push(playerData.relationshipIcon);
+        }
+        if (playerData.civSymbol) {
+            portraits.push(playerData.civSymbol);
+        }
+    }
+    return portraits;
+}
 const BZ_BACKDROP = false;
 const BZ_MAX_LEADERS = 20;
 Controls.define("panel-diplo-ribbon", {
@@ -1245,7 +1270,7 @@ Controls.define("panel-diplo-ribbon", {
         "trigger-nav-help"
     ],
     styles: [styles],
-    images: ["hud_att_arrow", "hud_att_arrow_highlight"]
+    images: ["hud_att_arrow", "hud_att_arrow_highlight", cacheLeaderAssets]
 });
 
 export { PanelDiploRibbon };
