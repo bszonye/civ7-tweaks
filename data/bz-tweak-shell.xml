@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Database>
     <MapSizes>
-        <!--
         <Replace Domain="StandardMapSizes" MapSizeType="MAPSIZE_HUGE" Name="LOC_MAPSIZE_HUGE_NAME" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="12" MaxHumans="10" DefaultPlayers="12" SortIndex="60"/>
         <Replace Domain="DistantLandsMapSizes" MapSizeType="MAPSIZE_HUGE" Name="LOC_MAPSIZE_HUGE_NAME" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="12" MaxHumans="10" DefaultPlayers="12" SortIndex="60"/>
+        <!--
         <Replace Domain="StandardMapSizes" MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="20" MaxHumans="10" DefaultPlayers="20" SortIndex="70"/>
         <Replace Domain="DistantLandsMapSizes" MapSizeType="MAPSIZE_TEST" Name="Test" Description="LOC_MAPSIZE_HUGE_DESCRIPTION" MinPlayers="2" MaxPlayers="20" MaxHumans="10" DefaultPlayers="20" SortIndex="70"/>
         -->
