@@ -356,7 +356,9 @@ class PanelDiploRibbon extends Panel {
             // TRIX: show happy faces in backdrop mode
             // portrait.setAttribute("data-icon-context", player.portraitContext);
             portrait.setAttribute("data-icon-context", BZ_BACKDROP ? "LEADER_HAPPY" : player.portraitContext);
-            portrait.classList.toggle("turn-active", player.isTurnActive);
+            // TRIX: don't raise current player in backdrop mode
+            // portrait.classList.toggle("turn-active", player.isTurnActive);
+            portrait.classList.toggle("turn-active", BZ_BACKDROP ? false : player.isTurnActive);
             // TRIX: show player-side faces in backdrop mode
             // portrait.classList.toggle("-scale-x-100", player.id != GameContext.localPlayerID);
             portrait.classList.toggle("-scale-x-100", player.id != GameContext.localPlayerID && !BZ_BACKDROP);
@@ -422,7 +424,9 @@ class PanelDiploRibbon extends Panel {
             civLeader.classList.toggle("can-click-leader-icon", player.canClick);
             civLeader.classList.toggle("selected", player.selected);
             civLeader.classList.toggle("local-player", player.id == GameContext.localPlayerID);
-            civLeader.classList.toggle("turn-active", player.isTurnActive);
+            // TRIX: don't raise current player in backdrop mode
+            // civLeader.classList.toggle("turn-active", player.isTurnActive);
+            civLeader.classList.toggle("turn-active", BZ_BACKDROP ? false : player.isTurnActive);
             civLeader.addEventListener("action-activate", (event) => {
                 event.stopPropagation();
                 event.preventDefault();
