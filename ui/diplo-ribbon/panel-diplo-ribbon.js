@@ -206,7 +206,13 @@ class PanelDiploRibbon extends Panel {
         this.Root.classList.toggle("top-40", 11 <= numShown);
         this.Root.classList.toggle("-right-4", 20 <= numShown);
         // TRIX: backdrop for screenshots
-        if (BZ_BACKDROP) this.Root.classList.add("bg-primary-4", "h-52");
+        if (BZ_BACKDROP) {
+            const backdrop = document.createElement("div");
+            backdrop.classList.value = "absolute bg-primary-5 -left-1\\.5 w-full top-0 -bottom-8";
+            this.Root.insertBefore(backdrop, this.topContainer);
+            this.topContainer.style.filter =
+                "drop-shadow(0 0 0.4444444444rem 0.4444444444rem black)";
+        };
         if (isDiplomacyHub) {
             for (let index = 0; index < targetArray.length; index++) {
                 if (targetArray[index].id == DiplomacyManager.selectedPlayerID) {
