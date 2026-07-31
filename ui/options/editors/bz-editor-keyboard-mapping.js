@@ -1,5 +1,5 @@
 const BZ_KEYS_TO_ADD = [
-    "bz-open-minor-powers",
+    // "bz-action-id",
 ];
 class bzEditorKeyboardMapping {
     static c = null;
