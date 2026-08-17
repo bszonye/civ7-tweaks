@@ -17,6 +17,8 @@ import DiplomacyManager from '../diplomacy/diplomacy-manager.js';
 import { TechCivicPopupVisibility } from '../tech-civic-complete/tech-civic-popup-manager.js';
 import styles from './panel-diplo-ribbon.scss.js';
 
+/* eslint-disable no-useless-assignment */
+
 class DiploFakeContext extends Panel {
 }
 Controls.define("panel-diplo-ribbon-fake", {
