@@ -53,10 +53,11 @@
             </Properties>
             <Actions>
                 <ImportFiles>
-                    <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
                     <Item>ui/bz-style/bz-style-tweaks.css</Item>
+                    <Item>ui/diplo-ribbon/panel-diplo-ribbon.js</Item>
                 </ImportFiles>
                 <UIScripts>
+                    <Item>ui/bz-capture/bz-capture.js</Item>
                     <Item>ui/bz-style/bz-style-tweaks.js</Item>
                     <Item>ui/input/bz-hotkey-manager.js</Item>
                     <Item>ui/options/editors/bz-editor-keyboard-mapping.js</Item>
