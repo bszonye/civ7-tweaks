@@ -1,16 +1,17 @@
 import { Audio } from '../../../core/ui/audio-base/audio-support.js';
 import { ActionActivateEventName, ActionActivateEvent } from '../../../core/ui/components/fxs-activatable.js';
-import ContextManager from '../../../core/ui/context-manager/context-manager.js';
-import ActionHandler from '../../../core/ui/input/action-handler.js';
+import { ContextManager } from '../../../core/ui/context-manager/context-manager.js';
 import { ActiveDeviceTypeChangedEventName } from '../../../core/ui/input/input-events.js';
 import { NavigateInputEventName, InputEngineEventName } from '../../../core/ui/input/input-support.js';
 import { InterfaceMode } from '../../../core/ui/interface-modes/interface-modes.js';
+import { ModdingRegistry } from '../../../core/ui/modding-registry-handler/modding-registry-handler.js';
 import Panel, { AnchorType } from '../../../core/ui/panel-support.js';
 import { applyPlayerColorsToElement } from '../../../core/ui/utilities/utilities-color.js';
 import { MustGetElement } from '../../../core/ui/utilities/utilities-dom.js';
 import { Layout } from '../../../core/ui/utilities/utilities-layout.js';
 import { multiplayerTeamColors } from '../../../core/ui/utilities/utilities-network-constants.js';
 import { FocusManager } from '../../../core/ui-next/services/focus-manager.js';
+import { IsControllerActive } from '../../../core/ui-next/services/input.js';
 import { DiploRibbonData, UpdateDiploRibbonEvent, RibbonStatsToggleStatus } from './model-diplo-ribbon.js';
 import { RaiseDiplomacyEvent } from '../diplomacy/diplomacy-events.js';
 import DiplomacyManager from '../diplomacy/diplomacy-manager.js';
@@ -94,6 +95,7 @@ class PanelDiploRibbon extends Panel {
         window.addEventListener("resize", this.windowResizeListener);
         window.addEventListener("update-diplo-ribbon", this.bannerUpdateListener);
     window.addEventListener(TechCivicPopupVisibility, this.techCivicPopupVisibilityListener);
+    this.Root.addEventListener("focusout", this.onFocusout, true);
         engine.on("AttributePointsChanged", this.attributePointsUpdatedListener);
         engine.on("AttributeNodeCompleted", this.attributePointsUpdatedListener);
         engine.on("InputContextChanged", this.inputContextChangedListener);
@@ -114,6 +116,7 @@ class PanelDiploRibbon extends Panel {
         window.removeEventListener("engine-input", this.engineCaptureAllInputListener, true);
         window.removeEventListener(ActiveDeviceTypeChangedEventName, this.activeDeviceTypeListener);
     window.removeEventListener(TechCivicPopupVisibility, this.techCivicPopupVisibilityListener);
+    this.Root.removeEventListener("focusout", this.onFocusout, true);
         engine.off("UI_OptionsChanged", this.userOptionChangedListener);
         engine.off("AttributePointsChanged", this.attributePointsUpdatedListener);
         engine.off("AttributeNodeCompleted", this.attributePointsUpdatedListener);
@@ -126,7 +129,7 @@ class PanelDiploRibbon extends Panel {
      * @returns
      */
     canTakeGamepadFocus() {
-        let isFocusable = ActionHandler.isGamepadActive;
+    let isFocusable = IsControllerActive();
         if (isFocusable) {
       const alwaysShow = DiploRibbonData.alwaysShowYields;
             if (alwaysShow && !this.panArrows) {
@@ -489,7 +492,9 @@ class PanelDiploRibbon extends Panel {
             this.civFlagFlexboxPartOne.appendChild(civLeader);
             const civFlagYieldFlex = document.createElement("div");
             civFlagYieldFlex.classList.value = "diplo-ribbon__yields flow-column items-stretch relative px-1 mt-14";
-            for (let yieldIndex = 0; yieldIndex < player.displayItems.length; yieldIndex++) {
+      civFlagYieldFlex.setAttribute("data-leader-id", "" + player.id);
+      let yieldIndex = 0;
+      for (; yieldIndex < player.displayItems.length; yieldIndex++) {
                 const yieldData = player.displayItems[yieldIndex];
                 const yieldItem = document.createElement("fxs-activatable");
                 yieldItem.classList.add("yield-item", "flow-row", "items-center", "pointer-events-auto");
@@ -512,6 +517,11 @@ class PanelDiploRibbon extends Panel {
                 yieldItem.appendChild(yieldValue);
                 civFlagYieldFlex.appendChild(yieldItem);
             }
+      civFlagYieldFlex.setAttribute("data-item-count", "" + yieldIndex);
+      const modItemsElement = document.createElement("div");
+      modItemsElement.id = `yield-mod-items-${player.id}`;
+      civFlagYieldFlex.appendChild(modItemsElement);
+      ModdingRegistry.attachModElementsTo("panel-diplo-ribbon", modItemsElement);
             civFlagContent.appendChild(civFlagYieldFlex);
             const religionSection = document.createElement("div");
             religionSection.classList.add(
@@ -728,8 +738,11 @@ class PanelDiploRibbon extends Panel {
                     );
                     console.error(`    civFlagYieldFlex has ${civFlagYieldFlex.children.length} children, while .`);
                 }
+        const yieldValue = yieldItem.querySelector(".yield-value");
+        if (!yieldValue) {
+          continue;
+        }
                 yieldItem.setAttribute("data-tooltip-content", yieldInfo.label);
-                const yieldValue = MustGetElement(".yield-value", yieldItem);
                 yieldValue.setAttribute("data-l10n-id", yieldInfo.value.toString());
                 yieldValue.setAttribute("data-tooltip-content", yieldInfo.details);
             }
@@ -1130,6 +1143,7 @@ class PanelDiploRibbon extends Panel {
                 return;
             }
             this.attributeButton = document.createElement("fxs-activatable");
+      this.attributeButton.setAttribute("data-tooltip-content", "LOC_UI_ATTRIBUTE_TREES_TITLE");
             this.attributeButton.classList.value = "diplo-ribbon__attribute-button -left-1 bottom-3 h-10 absolute flex items-center justify-center";
             const buttonNumber = document.createElement("div");
             buttonNumber.classList.value = "diplo-ribbon__attribute-button-number font-body text-sm mt-2 px-4";
@@ -1240,6 +1254,13 @@ class PanelDiploRibbon extends Panel {
     }
   //listen to tech popup visibility to avoid controller softlock
   techCivicPopupVisibility() {
+    DiploRibbonData.userDiploRibbonsToggled = RibbonStatsToggleStatus.RibbonStatsHidden;
+    window.dispatchEvent(new UpdateDiploRibbonEvent());
+  }
+  /**
+   * Always minimize the diplo ribbons if we lose focus
+   */
+  onFocusout() {
     DiploRibbonData.userDiploRibbonsToggled = RibbonStatsToggleStatus.RibbonStatsHidden;
     window.dispatchEvent(new UpdateDiploRibbonEvent());
   }
