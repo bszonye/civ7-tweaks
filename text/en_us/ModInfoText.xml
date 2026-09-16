@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <EnglishText>
+        <Row Tag="LOC_MOD_BZ_TWEAKS_NAME">
+            <Text>Trixie’s Tweaks</Text>
+        </Row>
+        <Row Tag="LOC_MOD_BZ_TWEAKS_DESCRIPTION">
+            <Text>gameplay adjustments and experiments</Text>
+        </Row>
+    </EnglishText>
+</Database>
