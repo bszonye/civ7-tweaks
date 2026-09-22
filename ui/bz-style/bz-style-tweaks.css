@@ -1,16 +1,22 @@
-fxs-hslot.sub-system-dock--button-container {
+.sub-system-dock--button-container {
   flex-wrap: wrap;
-  width: 31.25rem;
-  width: 31.2777777778rem;  /* rounded up to nearest pixel */
+  width: 31.25rem;  /* 4 columns */
+  width: 34.8333333333rem;  /* 5 columns, rounded up to nearest pixel */
 }
-crisis-meter.ssb__element.agetimer,
-fxs-ring-meter.ssb__element.agetimer,
-crisis-meter.ssb__element.ageextended,
-fxs-ring-meter.ssb__element.ageextended {
-  margin-left: 0;
+.ssb__element.agetimer, .ssb__element.ageextended,
+.ssb__element.tech, .ssb__element.civic {
+  margin-bottom: -7rem !important;
 }
-fxs-activatable.ssb__element:last-child {
-  margin-right: 0.3333333333rem;
+.ssb__element.bz-gov,
+.ssb__element.ssb__button {
+  /* margin-top: 0 !important; */
+  margin-bottom: 0.1111111111rem !important;
+}
+.ssb__element.agetimer, .ssb__element.ageextended {
+  margin-left: 0 !important;
+}
+.ssb__element:last-child {
+  margin-right: 0.3333333333rem !important;
 }
 .triumph-card.w-84 {
   width: 14.2222222222rem;
