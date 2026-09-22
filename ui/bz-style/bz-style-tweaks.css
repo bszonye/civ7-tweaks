@@ -1,7 +1,13 @@
 fxs-hslot.sub-system-dock--button-container {
   flex-wrap: wrap;
-  width: 32.3611111111rem;
-  width: 32.3888888889rem;  /* rounded up to nearest pixel */
+  width: 31.25rem;
+  width: 31.2777777778rem;  /* rounded up to nearest pixel */
+}
+crisis-meter.ssb__element.agetimer,
+fxs-ring-meter.ssb__element.agetimer,
+crisis-meter.ssb__element.ageextended,
+fxs-ring-meter.ssb__element.ageextended {
+  margin-left: 0;
 }
 fxs-activatable.ssb__element:last-child {
   margin-right: 0.3333333333rem;
