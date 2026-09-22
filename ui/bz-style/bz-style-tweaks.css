@@ -1,3 +1,11 @@
+fxs-hslot.sub-system-dock--button-container {
+  flex-wrap: wrap;
+  width: 32.3611111111rem;
+  width: 32.3888888889rem;  /* rounded up to nearest pixel */
+}
+fxs-activatable.ssb__element:last-child {
+  margin-right: 0.3333333333rem;
+}
 .triumph-card.w-84 {
   width: 14.2222222222rem;
 }
@@ -7,3 +15,4 @@
 .triumph-card .w-72 {
   width: 11.5555555556rem;
 }
+/* vim: set sw=2 et tw=72 :*/
